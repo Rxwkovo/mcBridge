@@ -58,10 +58,12 @@ public final class McpConfig {
 	public boolean auditLog = true;
 
 	// capability gates ------------------------------------------------------------------------
-	public boolean enableWorldWrite = true;
-	public boolean enableCommands = true;
-	public boolean enablePlayerControl = true;
+	public boolean enableWorldWrite = false;
+	public boolean enableCommands = false;
+	public boolean enablePlayerControl = false;
 	public boolean enableVision = true;
+	/** Allow discovery of registered block definitions, independently of world observation. */
+	public boolean enableRegistryRead = true;
 	/** Generic control of game screens (ui.*). Off by default; also needs enablePlayerControl. */
 	public boolean enableUiControl = false;
 	/**

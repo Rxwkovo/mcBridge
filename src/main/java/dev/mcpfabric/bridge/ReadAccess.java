@@ -10,7 +10,7 @@ import java.util.Set;
 public final class ReadAccess {
 	static final Set<String> METHODS = Set.of(
 			"info.status", "info.capabilities", "session.info",
-			"world.getBlock", "world.getBlocks", "world.findBlocks", "world.getTimeAndWeather", "world.getDimensions", "world.raycast",
+			"world.inspectCreateNetwork", "world.inspectCreateKinetic", "world.inspectBlockEntity", "world.listRegisteredBlocks", "world.getBlock", "world.getBlocks", "world.findBlocks", "world.getTimeAndWeather", "world.getDimensions", "world.raycast",
 			"entities.query", "entities.get", "players.list", "players.get",
 			"chat.getRecent", "events.getRecent",
 			"player.getState", "player.getInventory", "player.getEquipment", "player.getStatusEffects",

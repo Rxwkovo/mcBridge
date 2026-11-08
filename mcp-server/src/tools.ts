@@ -104,11 +104,48 @@ export const TOOLS: ToolDef[] = [
 
   // ===== world (read) ========================================================================
   {
+    name: "inspect_create_network",
+    method: "world.inspectCreateNetwork",
+    title: "Inspect Create network",
+    description: "Inspect the existing Create 6.0.10 kinetic network cache via an anchor block. Totals may be stale and include unloaded members. Member pages are bounded and may repeat or omit entries if the network changes; network IDs are not persistent. No topology is inferred.",
+    inputSchema: { ...vec3(), ...dimensionOpt, offset: z.number().int().min(0).max(4095).optional(), limit: z.number().int().min(1).max(64).optional() },
+    annotations: READ,
+  },
+  {
+    name: "inspect_create_kinetic",
+    method: "world.inspectCreateKinetic",
+    title: "Inspect Create kinetic state",
+    description: "Inspect a static-world Create 6.0.10 kinetic block entity, including actual speed and available cached network state. Does not support contraptions. Requires a loaded chunk and vision enabled.",
+    inputSchema: { ...vec3(), ...dimensionOpt },
+    annotations: READ,
+  },
+  {
+    name: "inspect_block_entity",
+    method: "world.inspectBlockEntity",
+    title: "Inspect block entity",
+    description: "Inspect a loaded block's state, entity type and unsided NeoForge item, fluid and energy capabilities. Persistence is opt-in and restricted to a few numeric fields; runtime data needs an adapter. Capability providers may run mod code.",
+    inputSchema: { ...vec3(), ...dimensionOpt, includePersistent: z.boolean().optional() },
+    annotations: READ,
+  },
+  {
+    name: "list_registered_blocks",
+    method: "world.listRegisteredBlocks",
+    title: "List registered blocks",
+    description: "Query the live block registry with optional namespace and name/id filters. Returns legal state property values, paginated. Requires registry discovery enabled and a running server.",
+    inputSchema: {
+      modId: z.string().max(128).optional(),
+      search: z.string().max(128).optional(),
+      offset: z.number().int().min(0).max(2147483647).optional(),
+      limit: z.number().int().min(1).max(200).optional(),
+    },
+    annotations: READ,
+  },
+  {
     name: "get_block",
     method: "world.getBlock",
     title: "Get block at position",
     description:
-      "Read the block at an exact integer position: its block id, blockstate properties, whether it is air/fluid/solid, light levels, and hardness. Requires a loaded chunk.",
+      "Read the block id, blockstate properties, fluid presence, light, hardness, game tick and block entity type if present. Persistent and runtime block entity data are not collected. Requires a loaded chunk.",
     inputSchema: { ...vec3(), ...dimensionOpt },
     annotations: READ,
   },
@@ -117,12 +154,13 @@ export const TOOLS: ToolDef[] = [
     method: "world.getBlocks",
     title: "Scan a cuboid region",
     description:
-      "Scan all blocks in the cuboid between two corners (inclusive) and return their ids. Regions above 16,777,216 positions (e.g. 256x256x256) are refused to protect the server: split larger areas. The answer is capped at maxBlocks (default 32768, truncated=true when hit); air is omitted unless includeAir is true.",
+      "Scan one page of a cuboid on the game thread, visiting at most 4096 positions. If truncated, pass nextOffset as offset with the same bounds and filters. Pages can have different gameTime values and are not an atomic snapshot. Reports unloaded positions skipped.",
     inputSchema: {
       from: z.object(vec3()).describe("One corner of the cuboid."),
       to: z.object(vec3()).describe("Opposite corner of the cuboid."),
       includeAir: z.boolean().optional().default(false).describe("Include air blocks in the result."),
-      maxBlocks: z.number().int().min(1).max(200000).optional().describe("Override the per-call block cap."),
+      maxBlocks: z.number().int().min(1).max(4096).optional().describe("Maximum returned blocks (at most 4096)."),
+      offset: z.number().int().min(0).max(16777216).optional().describe("Position cursor returned as nextOffset by the previous page."),
       ...dimensionOpt,
     },
     annotations: READ,

@@ -46,7 +46,8 @@ public final class InfoHandlers {
 
 			JsonObject groups = new JsonObject();
 			groups.addProperty("info", true);
-			groups.addProperty("world_read", serverPresent);
+			groups.addProperty("world_read", serverPresent && McpFabric.config().enableVision);
+			groups.addProperty("registry_read", serverPresent && McpFabric.config().enableRegistryRead);
 			groups.addProperty("world_write", serverPresent && McpFabric.config().enableWorldWrite);
 			groups.addProperty("entities", serverPresent);
 			groups.addProperty("players_admin", serverPresent && McpFabric.config().enableCommands);
@@ -80,7 +81,8 @@ public final class InfoHandlers {
 		a.add("events");
 		if (McpFabric.config().enableSupervisedControl) a.add("supervised");
 		if (serverPresent) {
-			a.add("world_read");
+			if (McpFabric.config().enableRegistryRead) a.add("registry_read");
+			if (McpFabric.config().enableVision) a.add("world_read");
 			a.add("entities");
 			if (McpFabric.config().enableWorldWrite) a.add("world_write");
 			if (McpFabric.config().enableCommands) {

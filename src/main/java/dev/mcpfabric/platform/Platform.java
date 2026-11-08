@@ -1,6 +1,9 @@
 package dev.mcpfabric.platform;
 
 import java.nio.file.Path;
+import com.google.gson.JsonObject;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 
 /**
  * The few mod-loader services the shared code needs. Each loader entrypoint (Fabric, NeoForge)
@@ -20,4 +23,11 @@ public interface Platform {
 	String minecraftVersion();
 
 	String modVersion();
+
+	/** Loader-specific, non-mutating capability inspection; callers run on the server thread. */
+	default JsonObject inspectBlockCapabilities(ServerLevel level, BlockPos pos) {
+		JsonObject result = new JsonObject();
+		result.addProperty("status", "unsupported_loader");
+		return result;
+	}
 }

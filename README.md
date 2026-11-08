@@ -170,10 +170,11 @@ stops), and the MCP server reads it when `MCPFABRIC_TOKEN` is not set. Set `writ
   "worldIdKey": "generated automatically",
   "writeDiscoveryFile": true,
   "auditLog": true,
-  "enableWorldWrite": true,
-  "enableCommands": true,
-  "enablePlayerControl": true,
+  "enableWorldWrite": false,
+  "enableCommands": false,
+  "enablePlayerControl": false,
   "enableVision": true,
+  "enableRegistryRead": true,
   "enableUiControl": false,
   "enableSupervisedControl": false,
   "supervisedWorlds": [],
@@ -182,8 +183,10 @@ stops), and the MCP server reads it when `MCPFABRIC_TOKEN` is not set. Set `writ
 }
 ```
 
-The `enable*` flags let you switch off dangerous capability groups. `enableUiControl` is the one
-that starts off: it lets the model click buttons and type into text fields of game screens
+The `enable*` flags control capability groups. World writes, commands, player control and UI control
+start disabled in newly generated configurations. Existing configurations retain their values.
+There is no work-area protection yet; only use write access in disposable test worlds.
+`enableUiControl` lets the model click buttons and type into text fields of game screens
 (`get_ui`, `click_widget`, `set_text_field`), which reaches settings and actions the other tools
 never expose. Vanilla screens are limited to the pause, title, death, options, advancements,
 statistics, confirmation and container screens, but screens added by other mods are not restricted, so turn it on
@@ -323,7 +326,7 @@ claude --dangerously-load-development-channels server:mcpfabric
 ## Tools (50+)
 
 **info** — `get_status`, `list_capabilities`
-**world (read)** — `get_block`, `get_blocks_region`, `find_blocks`, `get_time_and_weather`, `list_dimensions`, `raycast`
+**world (read)** — `list_registered_blocks`, `inspect_block_entity`, `inspect_create_kinetic`, `inspect_create_network`, `get_block`, `get_blocks_region`, `find_blocks`, `get_time_and_weather`, `list_dimensions`, `raycast`
 **world (write)** — `set_block`, `fill_blocks`, `set_time`, `set_weather`
 **entities** — `query_entities`, `get_entity`, `summon_entity`, `remove_entity`
 **players (admin)** — `list_players`, `get_player`, `teleport_player`, `set_gamemode`, `give_item`, `apply_effect`, `message_player`, `kick_player`

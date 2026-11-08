@@ -23,7 +23,8 @@ ext.javaVersion = javaVersion
 java {
 	withSourcesJar()
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(javaVersion)
+		// Allow a newer installed JDK to compile with --release for the target runtime.
+		languageVersion = JavaLanguageVersion.of((project.findProperty("compiler_java_version") ?: javaVersion) as int)
 	}
 }
 

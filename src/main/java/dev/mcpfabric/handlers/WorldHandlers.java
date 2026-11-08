@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.mcpfabric.McpFabric;
+import dev.mcpfabric.adapters.CreateKineticAdapter;
+import dev.mcpfabric.adapters.CreateNetworkAdapter;
 import dev.mcpfabric.ServerHolder;
 import dev.mcpfabric.bridge.MainThread;
 import dev.mcpfabric.bridge.RpcContext;
@@ -12,8 +14,11 @@ import dev.mcpfabric.bridge.RpcRouter;
 import dev.mcpfabric.handlers.support.CommandRunner;
 import dev.mcpfabric.handlers.support.Gates;
 import dev.mcpfabric.handlers.support.Levels;
+import dev.mcpfabric.handlers.support.RegionCursor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.NumericTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +27,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -35,7 +41,7 @@ import java.util.Set;
 
 /** World read (block/region/find/time/weather/dimensions/raycast) and write (set/fill/time/weather). */
 public final class WorldHandlers {
-	private static final int DEFAULT_REGION_CAP = 32768;
+	private static final int DEFAULT_REGION_CAP = 4096;
 	/**
 	 * Most positions one region read may visit (256x256x256). The scan runs on the server thread, so
 	 * maxBlocks alone (it limits the answer, not the work) let a huge mostly-air region freeze the server.
@@ -46,6 +52,109 @@ public final class WorldHandlers {
 	private WorldHandlers() {}
 
 	public static void register(RpcRouter router) {
+		router.register("world.inspectCreateNetwork", ctx -> onServer(server -> {
+			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
+			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
+			int offset = ctx.optInt("offset", 0), limit = ctx.optInt("limit", 32);
+			if (offset < 0 || offset >= CreateNetworkAdapter.MAX_VISITS || limit < 1 || limit > CreateNetworkAdapter.MAX_PAGE_SIZE)
+				throw RpcException.badRequest("offset must be 0..4095 and limit 1..64.");
+			if (!level.hasChunkAt(pos)) throw RpcException.notFound("Chunk not loaded at " + pos.toShortString());
+			JsonObject result = CreateNetworkAdapter.inspect(level.getBlockEntity(pos), offset, limit);
+			result.addProperty("x", pos.getX()); result.addProperty("y", pos.getY()); result.addProperty("z", pos.getZ());
+			result.addProperty("dimension", Levels.dimensionId(level));
+			result.addProperty("gameTime", level.getGameTime());
+			return result;
+		}));
+		router.register("world.inspectCreateKinetic", ctx -> onServer(server -> {
+			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
+			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
+			if (!level.hasChunkAt(pos)) throw RpcException.notFound("Chunk not loaded at " + pos.toShortString());
+			JsonObject result = CreateKineticAdapter.inspect(level.getBlockEntity(pos));
+			if ("ok".equals(result.get("status").getAsString()) && result.get("hasNetwork").getAsBoolean()) {
+				JsonObject network = CreateNetworkAdapter.inspect(level.getBlockEntity(pos), 0, 1);
+				for (String key : List.of("anchorStressSU", "anchorCapacitySU", "anchorContributionSource", "totalsStatus"))
+					if (network.has(key)) result.add(key, network.get(key));
+			}
+			var blockEntity = level.getBlockEntity(pos);
+			if (blockEntity != null) result.addProperty("blockEntityType", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType()).toString());
+			result.addProperty("x", pos.getX()); result.addProperty("y", pos.getY()); result.addProperty("z", pos.getZ());
+			result.addProperty("blockId", Levels.blockId(level.getBlockState(pos)));
+			result.addProperty("dimension", Levels.dimensionId(level));
+			result.addProperty("gameTime", level.getGameTime());
+			return result;
+		}));
+		router.register("world.inspectBlockEntity", ctx -> onServer(server -> {
+			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
+			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
+			if (!level.hasChunkAt(pos)) throw RpcException.notFound("Chunk not loaded at " + pos.toShortString());
+			var state = level.getBlockState(pos);
+			var entity = level.getBlockEntity(pos);
+			JsonObject result = Levels.describeBlock(level, pos, state);
+			result.addProperty("dimension", Levels.dimensionId(level));
+			result.addProperty("gameTime", level.getGameTime());
+			if (entity == null) {
+				result.addProperty("status", "no_block_entity");
+				return result;
+			}
+			result.addProperty("status", "available");
+			result.addProperty("blockEntityType", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(entity.getType()).toString());
+			JsonObject persistent = new JsonObject();
+			if (ctx.optBool("includePersistent", false)) {
+				try {
+					// Only fixed scalar numeric keys leave the bridge. Do not return raw arbitrary NBT.
+					var data = entity.saveWithoutMetadata(level.registryAccess());
+					JsonObject fields = new JsonObject();
+					for (String key : List.of("BurnTime", "CookTime", "CookTimeTotal", "Energy", "energy")) {
+						if (data.get(key) instanceof NumericTag number) fields.addProperty(key, number.getAsDouble());
+					}
+					persistent.addProperty("status", "filtered");
+					persistent.add("numericFields", fields);
+				} catch (RuntimeException ex) { persistent.addProperty("status", "read_error"); }
+			} else persistent.addProperty("status", "not_requested");
+			result.add("persistentData", persistent);
+			result.add("capabilities", McpFabric.platform().inspectBlockCapabilities(level, pos));
+			JsonObject runtime = new JsonObject();
+			runtime.addProperty("status", "unsupported_without_adapter");
+			result.add("runtimeData", runtime);
+			return result;
+		}));
+		router.register("world.listRegisteredBlocks", ctx -> {
+			Gates.registryRead();
+			return onServerRegistry(server -> {
+				String mod = ctx.optString("modId", "").toLowerCase(java.util.Locale.ROOT);
+				String search = ctx.optString("search", "").toLowerCase(java.util.Locale.ROOT);
+				int offset = ctx.optInt("offset", 0), limit = ctx.optInt("limit", 100);
+				if (offset < 0 || limit < 1 || limit > 200 || mod.length() > 128 || search.length() > 128)
+					throw RpcException.badRequest("Invalid offset, limit (1..200), or filter length.");
+				JsonArray blocks = new JsonArray();
+				int matched = 0;
+				for (var block : BuiltInRegistries.BLOCK) {
+					var id = BuiltInRegistries.BLOCK.getKey(block);
+					String name = block.getName().getString();
+					if (!mod.isEmpty() && !id.getNamespace().equals(mod)) continue;
+					if (!search.isEmpty() && !id.toString().toLowerCase(java.util.Locale.ROOT).contains(search)
+							&& !name.toLowerCase(java.util.Locale.ROOT).contains(search)) continue;
+					if (matched++ < offset || blocks.size() >= limit) continue;
+					JsonObject item = new JsonObject();
+					item.addProperty("id", id.toString());
+					item.addProperty("name", name);
+					JsonObject properties = new JsonObject();
+					for (Property<?> property : block.getStateDefinition().getProperties()) {
+						JsonArray values = new JsonArray();
+						addPropertyValues(property, values);
+						properties.add(property.getName(), values);
+					}
+					item.add("properties", properties);
+					blocks.add(item);
+				}
+				JsonObject result = new JsonObject();
+				result.addProperty("offset", offset);
+				result.addProperty("total", matched);
+				result.addProperty("hasMore", (long) offset + blocks.size() < matched);
+				result.add("blocks", blocks);
+				return result;
+			});
+		});
 		router.register("world.getBlock", ctx -> onServer(server -> {
 			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
 			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
@@ -53,6 +162,16 @@ public final class WorldHandlers {
 			BlockState state = level.getBlockState(pos);
 			JsonObject o = Levels.describeBlock(level, pos, state);
 			o.addProperty("dimension", Levels.dimensionId(level));
+			o.addProperty("gameTime", level.getGameTime());
+			var blockEntity = level.getBlockEntity(pos);
+			if (blockEntity != null) {
+				JsonObject entity = new JsonObject();
+				entity.addProperty("type", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType()).toString());
+				entity.addProperty("source", "block_entity_type_registry");
+				entity.addProperty("persistentData", "not collected");
+				entity.addProperty("runtimeData", "not collected");
+				o.add("blockEntity", entity);
+			}
 			o.addProperty("blockLight", level.getBrightness(LightLayer.BLOCK, pos));
 			o.addProperty("skyLight", level.getBrightness(LightLayer.SKY, pos));
 			o.addProperty("hardness", state.getDestroySpeed(level, pos));
@@ -66,39 +185,48 @@ public final class WorldHandlers {
 			int minX = Math.min(from.getX(), to.getX()), minY = Math.min(from.getY(), to.getY()), minZ = Math.min(from.getZ(), to.getZ());
 			int maxX = Math.max(from.getX(), to.getX()), maxY = Math.max(from.getY(), to.getY()), maxZ = Math.max(from.getZ(), to.getZ());
 			boolean includeAir = ctx.optBool("includeAir", false);
-			long volume = (long) (maxX - minX + 1) * (maxY - minY + 1) * (maxZ - minZ + 1);
-			if (volume > MAX_REGION_VOLUME) {
-				throw RpcException.badRequest("Region has " + volume + " positions; the limit is " + MAX_REGION_VOLUME
-						+ " (for example 256x256x256). Split it into smaller regions.");
-			}
+			long dx = (long) maxX - minX + 1, dy = (long) maxY - minY + 1, dz = (long) maxZ - minZ + 1;
+			long volume;
+			try { volume = RegionCursor.volume(dx, dy, dz, MAX_REGION_VOLUME); }
+			catch (IllegalArgumentException e) { throw RpcException.badRequest("Region exceeds the maximum volume."); }
 			int cap = ctx.optInt("maxBlocks", DEFAULT_REGION_CAP);
+			if (cap < 1 || cap > 4096) throw RpcException.badRequest("maxBlocks must be between 1 and 4096.");
+			long offset = ctx.optLong("offset", 0);
+			if (!RegionCursor.validOffset(offset, volume)) throw RpcException.badRequest("offset must be within the region volume.");
 
 			JsonArray blocks = new JsonArray();
 			BlockPos.MutableBlockPos m = new BlockPos.MutableBlockPos();
-			boolean truncated = false;
-			outer:
-			for (int y = minY; y <= maxY; y++) {
-				for (int x = minX; x <= maxX; x++) {
-					for (int z = minZ; z <= maxZ; z++) {
-						if (blocks.size() >= cap) { truncated = true; break outer; }
-						m.set(x, y, z);
-						if (!level.hasChunkAt(m)) continue;
-						BlockState state = level.getBlockState(m);
-						if (!includeAir && state.isAir()) continue;
-						JsonObject b = new JsonObject();
-						b.addProperty("x", x);
-						b.addProperty("y", y);
-						b.addProperty("z", z);
-						b.addProperty("id", Levels.blockId(state));
-						blocks.add(b);
-					}
-				}
+			int scanned = 0;
+			int unloaded = 0;
+			long cursor = offset;
+			while (cursor < volume && scanned < 4096 && blocks.size() < cap) {
+				long index = cursor++;
+				long[] relative = RegionCursor.position(index, dx, dz);
+				int x = (int) (minX + relative[0]);
+				int y = (int) (minY + relative[1]);
+				int z = (int) (minZ + relative[2]);
+				scanned++;
+				m.set(x, y, z);
+				if (!level.hasChunkAt(m)) { unloaded++; continue; }
+				BlockState state = level.getBlockState(m);
+				if (!includeAir && state.isAir()) continue;
+				JsonObject b = new JsonObject();
+				b.addProperty("x", x);
+				b.addProperty("y", y);
+				b.addProperty("z", z);
+				b.addProperty("id", Levels.blockId(state));
+				blocks.add(b);
 			}
 			JsonObject o = new JsonObject();
 			o.addProperty("dimension", Levels.dimensionId(level));
 			o.addProperty("volume", volume);
+			o.addProperty("scanned", scanned);
+			o.addProperty("unloaded", unloaded);
+			o.addProperty("offset", offset);
+			o.addProperty("nextOffset", cursor);
+			o.addProperty("gameTime", level.getGameTime());
 			o.addProperty("count", blocks.size());
-			o.addProperty("truncated", truncated);
+			o.addProperty("truncated", cursor < volume);
 			o.add("blocks", blocks);
 			return o;
 		}));
@@ -362,7 +490,17 @@ public final class WorldHandlers {
 		JsonElement run(MinecraftServer server) throws RpcException;
 	}
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	private static void addPropertyValues(Property property, JsonArray values) {
+		for (Object value : property.getPossibleValues()) values.add(property.getName((Comparable) value));
+	}
+
 	private static JsonElement onServer(ServerWork work) throws RpcException {
+		Gates.vision();
+		return onServerRegistry(work);
+	}
+
+	private static JsonElement onServerRegistry(ServerWork work) throws RpcException {
 		MinecraftServer server = ServerHolder.get();
 		if (server == null) throw RpcException.noServer();
 		return MainThread.call(server, McpFabric.config().callTimeoutMs, () -> work.run(server));

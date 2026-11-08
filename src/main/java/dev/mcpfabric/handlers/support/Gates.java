@@ -61,6 +61,12 @@ public final class Gates {
 		}
 	}
 
+	public static void registryRead() throws RpcException {
+		if (!McpFabric.config().enableRegistryRead) {
+			throw RpcException.unavailable("Registry discovery is disabled (enableRegistryRead=false).");
+		}
+	}
+
 	/** Anything that runs a server command, including the player admin tools (they run level-4 commands). */
 	public static void commands() throws RpcException {
 		if (!McpFabric.config().enableCommands) {

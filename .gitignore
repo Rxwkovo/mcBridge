@@ -46,3 +46,7 @@ mcpfabric.config.json
 # MCP bundle build output
 .mcpb-stage/
 dist-mcpb/
+.gradle-user/
+.npm-cache/
+.test-tmp/
+integration-test/

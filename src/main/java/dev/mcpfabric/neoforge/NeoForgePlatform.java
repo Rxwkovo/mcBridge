@@ -7,6 +7,9 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
+import com.google.gson.JsonObject;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 
 final class NeoForgePlatform implements Platform {
 	private final String modVersion;
@@ -44,5 +47,10 @@ final class NeoForgePlatform implements Platform {
 	@Override
 	public String modVersion() {
 		return modVersion;
+	}
+
+	@Override
+	public JsonObject inspectBlockCapabilities(ServerLevel level, BlockPos pos) {
+		return NeoForgeCapabilities.inspect(level, pos);
 	}
 }

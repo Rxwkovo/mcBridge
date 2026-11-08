@@ -6,6 +6,16 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+- `list_registered_blocks` queries the live registry with filters, paging and legal state properties.
+- Block entity inspection provides bounded, unsided NeoForge capability views and opt-in filtered numeric persistence.
+- Create 6.0.10 kinetic and network inspections expose runtime RPM and bounded, potentially stale network caches.
+
+### Changed
+- New configurations default to observation-only for world writes, commands and player control.
+- Region reads visit at most 4096 positions per call and report a continuation offset, game tick and scan count.
+- Registry discovery has its own `enableRegistryRead` gate, independent of `enableVision`.
+
 ## [0.9.1] - 2026-11-06
 
 Fabric and NeoForge.
