@@ -1,5 +1,11 @@
 # MechAgent Bridge — POC-01 status, 2026-11-08
 
+## v1.0.0 stable build, 2026-11-11
+
+- The stable JAR and extracted MCP ZIP report 1.0.0. In the full Mechanomania reference pack, the same fixtures returned -8 RPM, 64/256 SU, the active pressing recipe, three iron sheets in the retained chest and two members on the native bearing. Unauthenticated access returned 401 and read-token construction returned 403.
+- Java passed 119 tests and the MCP server passed 127 tests plus TypeScript type checking. All 156 compiled mod classes match RC1. Stable changes affect metadata, packaging and public documentation.
+- See the [stable release notes](docs/releases/v1.0.0.md) and [PM12 case notes](docs/PM12.md).
+
 ## RC1 final Mechanomania acceptance, 2026-11-10
 
 - The isolated `MechAgent RC1 Test` world passed all three final checks on the candidate from `9e40057`. The Create speedometer displayed 8 RPM in both load states. MCP measured -8 actual and theoretical RPM. The stressometer and MCP agreed on 256 SU capacity and 64 → 128 SU consumption, corresponding to 25% → 50% load.

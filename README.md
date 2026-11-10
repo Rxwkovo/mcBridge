@@ -36,7 +36,7 @@ Compare your downloads to `SHA256SUMS.txt`. On Windows use `Get-FileHash -Algori
 
 ### Codex and Claude Code
 
-For Codex, set `MCPFABRIC_TOKEN` to the read token in the environment that launches Codex. Add the following to your user MCP configuration and replace the example path. For Claude Code, use the same environment or a private local client configuration.
+For Codex, set `MCPFABRIC_TOKEN` to the read token in the environment that launches Codex. Add the following to your user MCP configuration and replace the example path. For Claude Code, set the same environment variable before starting the client and add the JSON entry to your project MCP configuration.
 
 ```toml
 [mcp_servers.mechagent]
@@ -49,8 +49,21 @@ MCPFABRIC_URL = "http://127.0.0.1:25599"
 MCPFABRIC_TOOLSETS = "world,readonly"
 ```
 
-```sh
-claude mcp add --env MCPFABRIC_URL=http://127.0.0.1:25599 --env MCPFABRIC_TOOLSETS=world,readonly --transport stdio mechagent -- node "/absolute/path/to/mechagent/dist/index.js"
+```json
+{
+  "mcpServers": {
+    "mechagent": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/mechagent/dist/index.js"],
+      "env": {
+        "MCPFABRIC_TOKEN": "${MCPFABRIC_TOKEN}",
+        "MCPFABRIC_URL": "http://127.0.0.1:25599",
+        "MCPFABRIC_TOOLSETS": "world,readonly"
+      }
+    }
+  }
+}
 ```
 
 Use `codex mcp list` or `claude mcp list` to verify the entry. In the session, call `get_status` to confirm the connection and the loaded world. [Codex MCP reference](https://developers.openai.com/codex/mcp) · [Claude Code MCP reference](https://code.claude.com/docs/en/mcp)
