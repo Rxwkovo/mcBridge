@@ -1,0 +1,12 @@
+{
+  "status": "partial_segmented",
+  "segmentation": "4 MiB segments, compatible with the original file; default 64 MiB quota controlled by JVM property mechagent.telemetry.diskQuotaBytes, clamped to 4–512 MiB. Quarantine files and filesystem overhead are excluded. No automatic deletion.",
+  "segmented_live_validation": "With explicitly labelled synthetic gap fixtures in the isolated journal, live sampling rotated to segment 00000001; a normal restart recovered the monitor and appended samples. The final JAR reported 4,293,258 bytes and 14 queued, persisted and force-completed records. This does not prove power-loss durability.",
+  "disk_history": "Asynchronous bounded worker scans latest-definition history with sequence paging, optional UTC time and sample/gap filters. Repeated identical request polls pending results; cached results expire after 60 seconds and are non-atomic. A real isolated MCP test paged sequences 21450–21453 across two segments; these were labelled test gap records.",
+  "changes": ["The single journal worker drains batches of up to 64 records before forcing data and file metadata.", "Process-local accepted, queued, persisted and force-completed counts and persistence errors are exposed in monitor responses.", "An incomplete final record is copied to a unique quarantine file, the journal is truncated to its last newline, and a gap is recorded on recovery."],
+  "durability_scope": "force(true) is requested on the file; operating-system, device and parent-directory entry durability are not established. Counts are cumulative within this process and are not per-record receipts. Acceptance and queueing are the same operation.",
+  "live_validation": "A deliberately incomplete 23-byte tail in the isolated dedicated-server world was quarantined. MCP returned the existing monitor and incomplete_journal_tail_quarantined gap; this is not a power-loss test.",
+  "evidence": "integration-test/evidence/telemetry-poc03-tail-recovery.json",
+  "remaining": ["compression and retention", "quarantine and filesystem quota", "full corruption isolation and validation", "history index and bounded scan latency", "per-record durable receipts", "durable monitor definitions", "fault injection for force and filesystem errors"],
+  "limits": "A segment is capped at 4 MiB; the journal stops at its quota. Default in-memory history is capped at 64 records; disk scans use only the latest monitor-definition epoch and are non-atomic. Complete malformed records fail closed. No data retention or automatic deletion was added."
+}

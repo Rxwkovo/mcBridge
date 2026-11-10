@@ -6,12 +6,40 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-11
+
+- Ship the first GitHub release for Minecraft 1.21.1, NeoForge 21.1.248 and Create 6.0.10.
+- Align the NeoForge and MCP package metadata with the stable version, preserve the mod ID and include the MIT notice in both assets.
+- Verify the supported build in CI and publish only checksummed GitHub assets after the tagged build succeeds.
+- Document the PM12 empty-start factory case and the observed rate of 0.756 precision mechanisms per minute.
+
+## [MechAgent Bridge v1.0.0-rc.1] - 2026-11-10
+
+- Verify Create instruments at two loads, fresh iron pressing and metering across a normal reload, and native bearing observation in Mechanomania 1.1.13.1.
+- Remove the production entry points for the world-mutating acceptance fixture. Keep acceptance setup in the isolated test harness.
+- Document the NeoForge 1.21.1 and Create 6.0.10 release scope and verify native cart, bearing and piston observation in the isolated world.
+- Restrict inherited publishing jobs to the upstream repository.
+- Add loader-backed environment discovery and paged runtime catalog export for knowledge importers.
+- Observe loaded Create contraptions through read-only MCP, with native transforms, immutable block pages and opt-in region samples.
+- Share work-area authorization across construction, telemetry and metering, and isolate per-world meter state while preserving its journal format.
+- Add separate Base, Native Create and Mechanomania test profiles.
+
 ### Added
+- NeoForge Create 6.0.10 depot-to-hopper Factory Meter with scoped authorization and asynchronous cumulative journal; crash consistency and general throughput are not guaranteed.
+- `query_kinetic_history` and `compare_factory_periods` provide bounded asynchronous history projection and comparison of observed values.
+- `inspect_active_recipe` reads one active server recipe and can check a candidate item against its ingredients.
+- Disposable-world acceptance scripts for the NeoForge production candidate.
 - `list_registered_blocks` queries the live registry with filters, paging and legal state properties.
 - Block entity inspection provides bounded, unsided NeoForge capability views and opt-in filtered numeric persistence.
 - Create 6.0.10 kinetic and network inspections expose runtime RPM and bounded, potentially stale network caches.
 
 ### Changed
+- `query_factory_metrics` supports bounded asynchronous time-weighted wall-time and game-tick windows, with explicit coverage and unavailable throughput.
+- Factory metrics retain the latest inventory observation per monitored position, with interval ticks and explicit non-atomic semantics.
+- Factory telemetry reports latest per-position kinetic observations and utilization derived from cached Create SU where valid.
+- Entity observation requires the vision gate and includes dropped-item registry IDs and counts.
+- Create network observations use bounded, sorted, expiring snapshots for stable continuation pages.
+- Generic BlockEntity persistence serialization is unavailable until a bounded adapter exists.
 - New configurations default to observation-only for world writes, commands and player control.
 - Region reads visit at most 4096 positions per call and report a continuation offset, game tick and scan count.
 - Registry discovery has its own `enableRegistryRead` gate, independent of `enableVision`.

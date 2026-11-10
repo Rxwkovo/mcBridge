@@ -1,0 +1,496 @@
+{
+  "cases": [
+    {
+      "name": "get_block",
+      "isError": false,
+      "result": {
+        "x": 9,
+        "y": 128,
+        "z": 8,
+        "id": "create:shaft",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "axis": "x",
+          "waterlogged": "false"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 2947,
+        "blockEntity": {
+          "type": "create:simple_kinetic",
+          "source": "block_entity_type_registry",
+          "persistentData": "not collected",
+          "runtimeData": "not collected"
+        },
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 1.5,
+        "observationMicros": 616
+      }
+    },
+    {
+      "name": "preview_batch_edit",
+      "isError": true,
+      "result": [
+        {
+          "type": "text",
+          "text": "Bridge error [bad_request]: Position outside authorized area or world bounds."
+        }
+      ]
+    },
+    {
+      "name": "preview_batch_edit",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "status": "preview",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "pending"
+          }
+        ],
+        "gameTime": 2948,
+        "warning": "Non-atomic edits; shaft block entity data and kinetic network cache are not restored by undo."
+      }
+    },
+    {
+      "name": "commit_batch_edit",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "operationId": "b828be83-e5f0-471a-9b60-3355adbf30e2",
+        "status": "running",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "startedTick": 2948,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "pending"
+          }
+        ]
+      }
+    },
+    {
+      "name": "commit_batch_edit",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "operationId": "b828be83-e5f0-471a-9b60-3355adbf30e2",
+        "status": "running",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "startedTick": 2948,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "pending"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_edit_operation",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "operationId": "b828be83-e5f0-471a-9b60-3355adbf30e2",
+        "status": "completed",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "startedTick": 2948,
+        "finishedTick": 2949,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "applied"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_block",
+      "isError": false,
+      "result": {
+        "x": 9,
+        "y": 128,
+        "z": 8,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 2954,
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 0,
+        "observationMicros": 97
+      }
+    },
+    {
+      "name": "undo_edit_operation",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "operationId": "b828be83-e5f0-471a-9b60-3355adbf30e2",
+        "status": "undo_running",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "startedTick": 2954,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "applied"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_edit_operation",
+      "isError": false,
+      "result": {
+        "previewId": "41c0bf5e-1f5f-4a32-bb66-b2958279b652",
+        "operationId": "b828be83-e5f0-471a-9b60-3355adbf30e2",
+        "status": "undone",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "previewTick": 2948,
+        "startedTick": 2954,
+        "finishedTick": 2955,
+        "items": [
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "before": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "after": "Block{minecraft:air}",
+            "result": "undone"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_block",
+      "isError": false,
+      "result": {
+        "x": 9,
+        "y": 128,
+        "z": 8,
+        "id": "create:shaft",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "axis": "x",
+          "waterlogged": "false"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 2960,
+        "blockEntity": {
+          "type": "create:simple_kinetic",
+          "source": "block_entity_type_registry",
+          "persistentData": "not collected",
+          "runtimeData": "not collected"
+        },
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 1.5,
+        "observationMicros": 148
+      }
+    },
+    {
+      "name": "start_create_network_capture",
+      "isError": false,
+      "result": {
+        "status": "running",
+        "reason": "sampling",
+        "jobId": "637bf565-0208-4d7a-9b8f-e3e625f18708",
+        "dimension": "minecraft:overworld",
+        "networkId": "2199023288448",
+        "startTick": 2960,
+        "endTick": 2960,
+        "target": 4096,
+        "captured": 0,
+        "visited": 0,
+        "restarts": 0,
+        "changeDetected": false,
+        "ttlSecondsFromStart": 120,
+        "consistency": "best_effort_non_atomic: members sampled across ticks; topology can change undetected, so completeness is not guaranteed",
+        "nodesPerTick": 128,
+        "tickBudgetMicros": 1000,
+        "budgetNote": "soft limit globally, with at least one attempted member per active tick; individual getters may exceed it; memory counts conservative per-record estimates",
+        "initialSummary": {
+          "status": "ok",
+          "message": "Constant-work cached network summary; values can be stale.",
+          "networkId": "2199023288448",
+          "loadedMemberCacheCount": 3,
+          "loadedSourceCacheCount": 1,
+          "networkInitialized": true,
+          "totalsStatus": "cached_may_be_stale",
+          "capacitySU": 256,
+          "stressSU": 64,
+          "remainingSU": 192,
+          "utilization": 0.25,
+          "unloadedCapacitySU": 0,
+          "unloadedStressSU": 0,
+          "unloadedMembers": 0,
+          "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+          "anchor": {
+            "status": "ok",
+            "message": "Static-world kinetic block entity observed on the server thread.",
+            "createVersion": "6.0.10",
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "rotationSign": "negative",
+            "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+            "overstressed": false,
+            "hasNetwork": true,
+            "source": "Create KineticBlockEntity runtime fields and public methods",
+            "networkId": "2199023288448",
+            "rotationAxis": "x",
+            "networkStatus": "cached_snapshot",
+            "networkStressCapacity": 256,
+            "networkStressConsumption": 64,
+            "networkSize": 3,
+            "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+            "networkDirty": false,
+            "contraptionSupport": "unsupported: static-world block entities only"
+          },
+          "sampleGameTime": 2960,
+          "sampleDimension": "minecraft:overworld"
+        },
+        "observationMicros": 5408
+      }
+    },
+    {
+      "name": "get_create_network_capture",
+      "isError": false,
+      "result": {
+        "status": "finished",
+        "reason": "iteration_end",
+        "jobId": "637bf565-0208-4d7a-9b8f-e3e625f18708",
+        "dimension": "minecraft:overworld",
+        "networkId": "2199023288448",
+        "startTick": 2960,
+        "endTick": 2962,
+        "target": 4096,
+        "captured": 3,
+        "visited": 3,
+        "restarts": 0,
+        "changeDetected": false,
+        "ttlSecondsFromStart": 120,
+        "consistency": "best_effort_non_atomic: members sampled across ticks; topology can change undetected, so completeness is not guaranteed",
+        "nodesPerTick": 128,
+        "tickBudgetMicros": 1000,
+        "budgetNote": "soft limit globally, with at least one attempted member per active tick; individual getters may exceed it; memory counts conservative per-record estimates",
+        "initialSummary": {
+          "status": "ok",
+          "message": "Constant-work cached network summary; values can be stale.",
+          "networkId": "2199023288448",
+          "loadedMemberCacheCount": 3,
+          "loadedSourceCacheCount": 1,
+          "networkInitialized": true,
+          "totalsStatus": "cached_may_be_stale",
+          "capacitySU": 256,
+          "stressSU": 64,
+          "remainingSU": 192,
+          "utilization": 0.25,
+          "unloadedCapacitySU": 0,
+          "unloadedStressSU": 0,
+          "unloadedMembers": 0,
+          "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+          "anchor": {
+            "status": "ok",
+            "message": "Static-world kinetic block entity observed on the server thread.",
+            "createVersion": "6.0.10",
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "rotationSign": "negative",
+            "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+            "overstressed": false,
+            "hasNetwork": true,
+            "source": "Create KineticBlockEntity runtime fields and public methods",
+            "networkId": "2199023288448",
+            "rotationAxis": "x",
+            "networkStatus": "cached_snapshot",
+            "networkStressCapacity": 256,
+            "networkStressConsumption": 64,
+            "networkSize": 3,
+            "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+            "networkDirty": false,
+            "contraptionSupport": "unsupported: static-world block entities only"
+          },
+          "sampleGameTime": 2960,
+          "sampleDimension": "minecraft:overworld"
+        },
+        "observationMicros": 164
+      }
+    },
+    {
+      "name": "page_create_network_capture",
+      "isError": false,
+      "result": {
+        "status": "finished",
+        "reason": "iteration_end",
+        "jobId": "637bf565-0208-4d7a-9b8f-e3e625f18708",
+        "dimension": "minecraft:overworld",
+        "networkId": "2199023288448",
+        "startTick": 2960,
+        "endTick": 2962,
+        "target": 4096,
+        "captured": 3,
+        "visited": 3,
+        "restarts": 0,
+        "changeDetected": false,
+        "ttlSecondsFromStart": 120,
+        "consistency": "best_effort_non_atomic: members sampled across ticks; topology can change undetected, so completeness is not guaranteed",
+        "nodesPerTick": 128,
+        "tickBudgetMicros": 1000,
+        "budgetNote": "soft limit globally, with at least one attempted member per active tick; individual getters may exceed it; memory counts conservative per-record estimates",
+        "initialSummary": {
+          "status": "ok",
+          "message": "Constant-work cached network summary; values can be stale.",
+          "networkId": "2199023288448",
+          "loadedMemberCacheCount": 3,
+          "loadedSourceCacheCount": 1,
+          "networkInitialized": true,
+          "totalsStatus": "cached_may_be_stale",
+          "capacitySU": 256,
+          "stressSU": 64,
+          "remainingSU": 192,
+          "utilization": 0.25,
+          "unloadedCapacitySU": 0,
+          "unloadedStressSU": 0,
+          "unloadedMembers": 0,
+          "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+          "anchor": {
+            "status": "ok",
+            "message": "Static-world kinetic block entity observed on the server thread.",
+            "createVersion": "6.0.10",
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "rotationSign": "negative",
+            "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+            "overstressed": false,
+            "hasNetwork": true,
+            "source": "Create KineticBlockEntity runtime fields and public methods",
+            "networkId": "2199023288448",
+            "rotationAxis": "x",
+            "networkStatus": "cached_snapshot",
+            "networkStressCapacity": 256,
+            "networkStressConsumption": 64,
+            "networkSize": 3,
+            "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+            "networkDirty": false,
+            "contraptionSupport": "unsupported: static-world block entities only"
+          },
+          "sampleGameTime": 2960,
+          "sampleDimension": "minecraft:overworld"
+        },
+        "members": [
+          {
+            "x": 8,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:water_wheel",
+            "isSourceInCache": true,
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "cachedStressPerRpm": 0,
+            "stressSU": 0,
+            "cachedCapacityPerRpm": 32,
+            "capacitySU": 256,
+            "validity": "cached_member_not_revalidated",
+            "sampleGameTime": 2961
+          },
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:shaft",
+            "isSourceInCache": false,
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "cachedStressPerRpm": 0,
+            "stressSU": 0,
+            "sourcePosition": {
+              "x": 8,
+              "y": 128,
+              "z": 8
+            },
+            "validity": "cached_member_not_revalidated",
+            "sampleGameTime": 2962
+          },
+          {
+            "x": 10,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:mechanical_press",
+            "isSourceInCache": false,
+            "rpm": -8,
+            "theoreticalRpm": -8,
+            "cachedStressPerRpm": 8,
+            "stressSU": 64,
+            "sourcePosition": {
+              "x": 9,
+              "y": 128,
+              "z": 8
+            },
+            "validity": "cached_member_not_revalidated",
+            "sampleGameTime": 2962
+          }
+        ],
+        "offset": 0,
+        "hasMore": false,
+        "observationMicros": 175
+      }
+    }
+  ],
+  "environment": "isolated NeoForge 21.1.248 Create 6.0.10",
+  "tested": true,
+  "status": "partial",
+  "not_tested": [
+    "full unchanged Mechanomania",
+    "read-token negative HTTP",
+    "different request same key",
+    "intervening edit conflict",
+    "restart crash recovery",
+    "full autonomous assembly"
+  ],
+  "reliabilityFollowup": {
+    "partialState": "unit-tested, live fault injection pending",
+    "stalePreview": "rejected",
+    "sameKeySamePreview": "passed",
+    "sameKeyDifferentPreview": "rejected",
+    "cleanRestartQuery": "recovery_required",
+    "crashRecovery": "not tested",
+    "legacyMethods": "five rejected in REGION_BUILD",
+    "readOnlyCommit": "HTTP 403"
+  }
+}

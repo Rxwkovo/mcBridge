@@ -50,3 +50,6 @@ dist-mcpb/
 .npm-cache/
 .test-tmp/
 integration-test/
+
+# Stable release staging
+/release-assets/

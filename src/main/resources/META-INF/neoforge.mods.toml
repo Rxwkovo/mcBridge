@@ -1,21 +1,21 @@
 modLoader = "javafml"
 loaderVersion = "[1,)"
 license = "MIT"
-issueTrackerURL = "https://github.com/denfry/mcpfabric/issues"
+issueTrackerURL = "https://github.com/Rxwkovo/mcBridge/issues"
 
 [[mods]]
 modId = "mcpfabric"
 version = "${version}"
-displayName = "MCP Fabric"
-displayURL = "https://modrinth.com/mod/mcpfabric"
+displayName = "MechAgent Bridge"
+displayURL = "https://github.com/Rxwkovo/mcBridge"
 ${icon_property} = "assets/mcpfabric/icon.png"
-authors = "dabinayo"
-description = '''Exposes full read & control access to Minecraft through an embedded HTTP bridge, designed to be driven by an MCP server so AI agents can observe and control the game.'''
+authors = "Rxwkovo; derived from MCP Fabric by dabinayo"
+description = '''Local MCP bridge for Create observation, production monitoring and scoped Minecraft construction.'''
 
 [[dependencies.mcpfabric]]
 modId = "neoforge"
 type = "required"
-versionRange = "[${neoforge_version},)"
+versionRange = "${neoforge_dep}"
 ordering = "NONE"
 side = "BOTH"
 
@@ -25,3 +25,6 @@ type = "required"
 versionRange = "${minecraft_dep}"
 ordering = "NONE"
 side = "BOTH"
+
+[[mixins]]
+config = 'mechagent-meter.mixins.json'

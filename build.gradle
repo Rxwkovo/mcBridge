@@ -1,12 +1,9 @@
 // Per-version Fabric build. Stonecutter applies this script to every Fabric node declared in
 // settings.gradle (NeoForge nodes use build.neoforge.gradle); `project.minecraft_version` /
 // `project.fabric_api_version` come from that node's versions/<node>/gradle.properties. Settings shared
-// by both loaders live in gradle/common.gradle and gradle/modrinth.gradle.
+// by both loaders live in gradle/common.gradle.
 plugins {
 	id 'maven-publish'
-	// Modrinth publishing (declared apply false in stonecutter.gradle). Each node gets its own
-	// `modrinth` task; the root `publishFabric` task fans them out across every Minecraft version.
-	id 'com.modrinth.minotaur'
 }
 
 // Minecraft 26.1+ ships unobfuscated: it uses the non-remap Loom plugin and needs no mappings.
@@ -65,5 +62,3 @@ processResources {
 	}
 	exclude 'META-INF/neoforge.mods.toml'
 }
-
-apply from: rootProject.file('gradle/modrinth.gradle')

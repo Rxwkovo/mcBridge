@@ -1,0 +1,105 @@
+{
+  "status": "partial_passed_minimal_isolated_server",
+  "actual_observations": "Earlier isolated runs supplied one iron ingot each on either side of a normal server restart. The output chest increased from zero to two iron sheets. See v1-processing-acceptance.json for individual ticks and conditions.",
+  "measurement": "The observed inventory deltas and controlled fixture counts do not establish a reusable item-transfer meter or a per-minute factory throughput.",
+  "candidate_research": {
+    "source": "NeoForge 21.1.248 source jar SHA-256 B4B912457549FF586873CE78B39B08AF96F11A0E3A54C6B77576C6A25907083F; Create 6.0.10 jar SHA-256 EF87FE5709F1BA1F5B8BB20A2925B5AFB4669E178FD6D8BF10C167759EEFE37A.",
+    "finding": "VanillaInventoryCodeHooks.extractHook simulates a one-item capability extraction, verifies a compatible destination hopper slot, then performs non-simulated extraction, updates the hopper and returns true. It does not verify the actual extraction returned a nonempty stack before growing an existing destination stack. Therefore neither hook success nor target delta alone proves a valid source transfer. The Create DepotItemHandler returns the extracted stack and mutates its stored stack only for non-simulated extraction.",
+    "boundary": "A version-isolated observation after successful extractHook completion could potentially meter items entering a specifically authorized vanilla hopper from a known depot. It would not cover all Create logistics, fluid flows, processing production, non-hopper callers or transfers outside that boundary.",
+    "not_implemented": "Historical note: at the time of the diagnostic probe no production meter existed. The later single-boundary implementation and its limitations are described in factory_meter_acceptance."
+  },
+  "limitations": [
+    "The implemented meter covers only a specific Create depot to vanilla hopper boundary and one item filter; it does not measure general production or fluid flow.",
+    "No sustained multi-batch production run, different-load comparison, verified throughput rate or bottleneck diagnosis was performed.",
+    "Earlier kinetic comparison windows used the same -8 RPM and cached 128/256 SU."
+  ],
+  "next": "Harden coverage and persistence failure reporting, remove server-thread policy I/O without weakening revocation, test failed extraction and crash recovery, then expand metering and performance acceptance.",
+  "isolated_probe": {
+    "environment": "Java 21, NeoForge 21.1.248, Create 6.0.10 minimal isolated dedicated server; opt-in diagnostic Mixin",
+    "single_transfer": {
+      "fixture_supplied_iron_sheets": 1,
+      "consistent_records": 1,
+      "chest_before": 3,
+      "chest_after": 4
+    },
+    "batch_transfer": {
+      "fixture_supplied_iron_sheets": 5,
+      "consistent_records": 5,
+      "chest_before": 4,
+      "chest_after": 9
+    },
+    "after_normal_restart": {
+      "fixture_supplied_iron_sheets": 1,
+      "consistent_records": 1,
+      "chest_before": 9,
+      "chest_after": 10
+    },
+    "qualification": "Sheets were supplied directly by a test fixture, not produced by the press. Logs are observations of this path, not persistent meter counts, MCP throughput, production, crash guarantees, or full-pack acceptance.",
+    "evidence": [
+      "integration-test/evidence/meter-probe-batch.log",
+      "integration-test/evidence/meter-probe-restart.log"
+    ],
+    "initial_failure": "Helper in the Mixin-owned package caused IllegalClassLoadError; moving it outside that package allowed the isolated server to start. A fixed-port preflight was added to the isolated launch script after overlapping launch attempts; it is not an atomic lock."
+  },
+  "current_phase": "A version-gated, authorized depot-to-vanilla-hopper item counter is implemented. Results are boundary transfer observations, not total factory production. Asynchronous persistence and runtime failures require partial coverage.",
+  "factory_meter_acceptance": {
+    "environment": "Isolated dedicated server, Minecraft 1.21.1, NeoForge 21.1.248, Create 6.0.10, Java 21; not full Mechanomania",
+    "dimension": "minecraft:overworld",
+    "depot": [
+      6,
+      126,
+      8
+    ],
+    "hopper": [
+      6,
+      125,
+      8
+    ],
+    "chest": [
+      6,
+      124,
+      8
+    ],
+    "item": "create:iron_sheet",
+    "initial_chest_sheets": 13,
+    "production_before_restart": {
+      "ingots": 1,
+      "pressed_sheets": 1,
+      "meter_before": 0,
+      "meter_after": 1,
+      "chest_sheets": 14
+    },
+    "normal_restart": {
+      "recovered_count": 1,
+      "coverage": "partial_restart_gap"
+    },
+    "production_after_restart": {
+      "ingots": 1,
+      "pressed_sheets": 1,
+      "meter_after": 2
+    },
+    "fixture_batch": {
+      "directly_supplied_sheets": 3,
+      "meter_after": 5
+    },
+    "stopped_test": {
+      "directly_supplied_sheets": 1,
+      "meter_after": 5,
+      "chest_sheets": 19
+    },
+    "latest_jar_smoke": {
+      "new_meter_initial": 0,
+      "directly_supplied_sheets": 1,
+      "meter_after": 1,
+      "chest_sheets": 20
+    },
+    "read_only_token": "query succeeded; create rejected",
+    "test_fixture_caveat": "An earlier unlocked-hopper trial transported 3 input ingots directly into the chest; they were excluded from sheet totals. Hopper was then temporarily powered with redstone to allow each of two ingots to be pressed before collection.",
+    "limitations": [
+      "Normal restart only; crash consistency, permission revocation under transfer, failed extraction, full inventory and mod conflicts not tested in game.",
+      "The accepted state is queued asynchronously and is not a per-record durability receipt. Abrupt termination or queue loss can cause missing records; coverage is partial.",
+      "No throughput rate, historical meter event query, input direction, general hopper or funnel support, machine production inference or full pack validation.",
+      "Existing live work-area verifier reads the server-owned policy file during authorization on the server thread; per-transfer cost has not been benchmarked."
+    ]
+  }
+}

@@ -24,6 +24,12 @@ public interface Platform {
 
 	String modVersion();
 
+	/** Immutable loader metadata, available without a running world. */
+	default java.util.Map<String, String> loadedMods() { return java.util.Map.of(); }
+
+	/** True only when the version-specific meter adapter supports the loaded mods. */
+	default boolean supportsFactoryMeter() { return false; }
+
 	/** Loader-specific, non-mutating capability inspection; callers run on the server thread. */
 	default JsonObject inspectBlockCapabilities(ServerLevel level, BlockPos pos) {
 		JsonObject result = new JsonObject();

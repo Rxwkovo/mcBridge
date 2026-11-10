@@ -1,0 +1,507 @@
+{
+  "status": "passed_fullpack_rc1",
+  "scope": "Prepared isolated production-client copy of Mechanomania; original instance and saves are not modified.",
+  "observed": "The candidate passed instrument comparison, fresh pressing with meter continuation across a normal world reload, and observation of a rotating native bearing in the original isolated Mechanomania test world.",
+  "limitations": [
+    "Instrument screenshots and MCP samples were taken sequentially in stable load states. The speedometer displays magnitude only, and theoretical RPM is available from MCP.",
+    "Only the verified depot-to-hopper boundary was measured. The two increments are independent observed transfers. Restart coverage remains partial and does not guarantee exactly-once recovery.",
+    "The moving test verifies a bearing with a fixed pivot. A stationary anchor has zero displacement while its transform changes. Angular velocity, elevator and train acceptance remain outside the verified cases.",
+    "Existing pack startup warnings remain. This acceptance does not audit unrelated pack recipes or content."
+  ],
+  "current_attempt": {
+    "status": "world_loaded_partial_readonly_validation",
+    "date": "2026-11-09",
+    "game_root": "integration-test/production-client/.minecraft",
+    "world": "new isolated MechAgent RC1 Test; creative, commands disabled",
+    "versions": "Minecraft 1.21.1, NeoForge 21.1.248, Create 6.0.10, Java 21",
+    "latest_bridge_sha256": "D0E61045F10A30C96E9081C78779F854E78DD6FC69F7BAEDCA6FB25C97753B0D",
+    "mod_files": "200 jar filenames in isolated mods and copied source instance, matching names; hashes and actual loaded mod count not established",
+    "initial_failures": [
+      "NeoForge client/universal runtime artifacts missing from isolated libraries",
+      "Minecraft 1.21.1 NeoForge-generated client runtime artifacts missing from isolated libraries"
+    ],
+    "fix": "Copied missing runtime artifacts into isolated client only; prepare-production-client.ps1 now includes required paths.",
+    "mcp": {
+      "get_status": "serverPresent=true, integratedServer=true, READ_ONLY",
+      "list_capabilities": "world read and registry read available; world write, command, player control and region build disabled",
+      "create_registry": "6 shaft-related Create registered blocks",
+      "get_block": "minecraft:air at sampled position",
+      "inspect_block_entity": "no_block_entity for that air position",
+      "recipe": "create:pressing/iron_ingot: candidate matches, display output create:iron_sheet x1"
+    },
+    "kubejs": "Startup 5/5, client 2/2, server 19/19 scripts reported zero errors and warnings",
+    "log_errors": "Iris shader pack invalid; Xaero online data expired; numerous loot table/recipe/data map errors and a Patchouli guidebook build error. Root cause and effects remain unverified.",
+    "unverified": [
+      "All-mod loaded count and hash equivalence",
+      "Create RPM/SU and instruments",
+      "block entity capabilities in the full pack",
+      "construction and undo",
+      "live production and meter",
+      "telemetry restart",
+      "full pack performance"
+    ],
+    "evidence": "integration-test/evidence/fullpack-readonly.json (local ignored file)"
+  },
+  "fullpack_baseline": {
+    "status": "historical_baseline_partial",
+    "bridgeSha256": "D0E61045F10A30C96E9081C78779F854E78DD6FC69F7BAEDCA6FB25C97753B0D",
+    "modInventory": {
+      "jarNames": 200,
+      "identicalHashes": 199,
+      "expectedChangedJar": "Bridge",
+      "otherFiles": "6 ZIP files and one disabled JAR",
+      "loaderEntriesIncludingNested": 288
+    },
+    "observations": {
+      "normal": {
+        "rpm": -8,
+        "theoreticalRpm": -8,
+        "consumptionSU": 64,
+        "capacitySU": 256,
+        "members": 3
+      },
+      "increasedLoad": {
+        "consumptionSU": 128,
+        "capacitySU": 256
+      },
+      "overload": {
+        "rpm": 0,
+        "theoreticalRpm": -8,
+        "consumptionSU": 320,
+        "capacitySU": 256
+      },
+      "shaftRemovalAndUndo": "observed disconnection and restored network",
+      "production": "one manually placed iron ingot processed to one iron sheet",
+      "meter": "count increased from 0 to 1; one sheet found in output chest",
+      "authorization": "read token denied mutations; out-of-area edit denied; duplicate key returned original operation"
+    },
+    "outstanding": [
+      "Gauge display comparison",
+      "Production and counter continuation after full-pack restart",
+      "Full-pack recovery, backpressure and sustained performance"
+    ],
+    "evidence": [
+      "integration-test/evidence/rc1-fullpack-build.json",
+      "integration-test/evidence/rc1-mod-hashes.json",
+      "integration-test/evidence/rc1-loaded-mods.json"
+    ]
+  },
+  "latest_attempt": {
+    "status": "world_loaded_readonly_smoke_passed",
+    "date": "2026-11-10",
+    "codeCommit": "9e40057ddb3fd20c18c07812aa3dba1264382bbb",
+    "installedSha256": "d4e082937275a5c12967c193c6c7859b8c44e2150858bb9667b43b4a021155ae",
+    "runtime": {
+      "world": "MechAgent RC1 Test",
+      "integrated": true,
+      "java": "21.0.12.1",
+      "minecraft": "1.21.1",
+      "neoForge": "21.1.248",
+      "create": "6.0.10",
+      "bridge": "0.9.1+1.21.1"
+    },
+    "modInventory": {
+      "sourceJars": 200,
+      "isolatedJars": 200,
+      "matchedHashes": 199,
+      "changedJar": "mcpfabric-neoforge-0.9.1+1.21.1.jar",
+      "loaderEntries": 288,
+      "countBasis": "200 counts top-level active JAR filenames. 288 counts NeoForge mod entries including nested dependencies. Earlier 206 was not substantiated as an active-JAR count; the earlier inventory also had six ZIP files and one disabled JAR."
+    },
+    "authorization": {
+      "unauthenticated": 401,
+      "readOnlyMutation": 403,
+      "boundary": {
+        "code": "bad_request",
+        "message": "Position outside authorized area or world bounds."
+      }
+    },
+    "createRegistryMatches": 6,
+    "existingPress": {
+      "position": {
+        "x": -448,
+        "y": 78,
+        "z": 30
+      },
+      "rpm": -8,
+      "theoreticalRpm": -8,
+      "capacitySU": 256,
+      "stressSU": 64,
+      "utilization": 0.25,
+      "loadedMembers": 5,
+      "sourcePosition": {
+        "x": -447,
+        "y": 78,
+        "z": 30
+      },
+      "totalsStatus": "cached_may_be_stale",
+      "sampleGameTime": 228407
+    },
+    "recipe": {
+      "id": "create:pressing/iron_ingot",
+      "matchesIronIngot": true,
+      "result": {
+        "id": "create:iron_sheet",
+        "count": 1
+      }
+    },
+    "chest": [
+      {
+        "slot": 0,
+        "id": "create:iron_sheet",
+        "count": 1
+      }
+    ],
+    "restoredMeter": {
+      "count": 1,
+      "coverage": "partial_restart_gap",
+      "persistence": "queued_async_not_per_record_durable"
+    },
+    "restoredTelemetry": {
+      "monitors": 1,
+      "diskPageSizes": [
+        5
+      ]
+    },
+    "movingEndpoint": {
+      "status": "ok",
+      "structures": 0
+    },
+    "logs": {
+      "kubejs": "Startup 5/5, client 2/2, server 19/19, zero script errors/warnings",
+      "iris": "Selected ComplementaryUnbound shader in this launch; earlier shader warnings not reproduced as a launch blocker",
+      "packIssues": "41 recipe-loading errors, Xaero expired online data warnings and Yuushya Patchouli guidebook compilation failure. These did not block the sampled line; pack-wide recipe and content correctness was not audited."
+    },
+    "evidence": [
+      "integration-test/evidence/rc1-fullpack-final.json",
+      "integration-test/evidence/rc1-final-mod-hashes.json",
+      "integration-test/evidence/rc1-loaded-mods.json"
+    ]
+  },
+  "previous_candidate_attempt": {
+    "status": "latest_jar_staged_retest_blocked",
+    "blockingReason": "HMCL was minimized; computer-use app approval timed out. No integrated world session observed with this artifact.",
+    "installedSha256": "c25efed090457a7b88390af2afefef567c54bb66e0d13b57b54744a0492de7f2",
+    "baseline": "See fullpack_baseline for earlier artifact observations."
+  },
+  "final_acceptance": {
+    "date": "2026-11-10",
+    "world": "MechAgent RC1 Test",
+    "artifactSha256": "d4e082937275a5c12967c193c6c7859b8c44e2150858bb9667b43b4a021155ae",
+    "fixturePreparation": "The existing isolated save was backed up before testing. Local singleplayer fixture commands were enabled for setup and ingot placement, then disabled after saving. The Bridge authority configuration remained in REGION_BUILD. No LAN session was opened.",
+    "operationNotes": [
+      "The Windows prompt no longer covered the client after raising the game window.",
+      "The journal reached the configured 64 MiB quota and exposed disk_limit and one dropped record. An isolated launch property raised its quota to 128 MiB. A normal client restart retained existing segments and restored healthy writes.",
+      "A focus-recovery click removed the empty fixture depot. The recorded REGION_BUILD operation restored it before the first input and locked the hopper. No iron was present when the depot was restored."
+    ],
+    "instruments": {
+      "status": "passed",
+      "dimension": "minecraft:overworld",
+      "speedometer": {
+        "x": -450,
+        "y": 78,
+        "z": 30
+      },
+      "stressometer": {
+        "x": -449,
+        "y": 78,
+        "z": 30
+      },
+      "additionalLoad": {
+        "x": -451,
+        "y": 78,
+        "z": 30,
+        "block": "create:mechanical_press",
+        "removedAfter": true
+      },
+      "states": [
+        {
+          "phase": "normal",
+          "game": {
+            "speedMagnitudeRPM": 8,
+            "remainingSU": 192,
+            "capacitySU": 256,
+            "utilization": 0.25
+          },
+          "mcp": {
+            "networkId": "-122595546374066",
+            "actualRPM": -8,
+            "theoreticalRPM": -8,
+            "stressSU": 64,
+            "remainingSU": 192,
+            "capacitySU": 256,
+            "speedTick": 277740,
+            "stressTick": 277754,
+            "latestSampleFileWriteUtc": "2026-11-10T05:07:44.819Z",
+            "totalsStatus": "cached_may_be_stale"
+          },
+          "screenshots": [
+            {
+              "file": "integration-test/evidence/rc1-final-speedometer-normal.png",
+              "capturedLocal": "2026-11-10T13:07:20+08:00"
+            },
+            {
+              "file": "integration-test/evidence/rc1-final-stressometer-normal.png",
+              "capturedLocal": "2026-11-10T13:07:29+08:00"
+            }
+          ],
+          "raw": "integration-test/evidence/rc1-final-gauges-normal.jsonl"
+        },
+        {
+          "phase": "loaded",
+          "game": {
+            "speedMagnitudeRPM": 8,
+            "remainingSU": 128,
+            "capacitySU": 256,
+            "utilization": 0.5
+          },
+          "mcp": {
+            "networkId": "-122595546374066",
+            "actualRPM": -8,
+            "theoreticalRPM": -8,
+            "stressSU": 128,
+            "remainingSU": 128,
+            "capacitySU": 256,
+            "speedTick": 278744,
+            "stressTick": 278760,
+            "latestSampleFileWriteUtc": "2026-11-10T05:08:35.090Z",
+            "totalsStatus": "cached_may_be_stale"
+          },
+          "screenshots": [
+            {
+              "file": "integration-test/evidence/rc1-final-speedometer-loaded.png",
+              "capturedLocal": "2026-11-10T13:08:21+08:00"
+            },
+            {
+              "file": "integration-test/evidence/rc1-final-stressometer-loaded.png",
+              "capturedLocal": "2026-11-10T13:08:13+08:00"
+            }
+          ],
+          "raw": "integration-test/evidence/rc1-final-gauges-loaded.jsonl"
+        }
+      ]
+    },
+    "production": {
+      "status": "passed",
+      "recipe": "create:pressing/iron_ingot",
+      "input": "minecraft:iron_ingot",
+      "output": "create:iron_sheet",
+      "press": {
+        "x": -448,
+        "y": 78,
+        "z": 30
+      },
+      "depot": {
+        "x": -448,
+        "y": 76,
+        "z": 30
+      },
+      "hopper": {
+        "x": -448,
+        "y": 75,
+        "z": 30
+      },
+      "chest": {
+        "x": -448,
+        "y": 74,
+        "z": 30
+      },
+      "inputCountPerRun": 1,
+      "screenshot": "integration-test/evidence/rc1-final-iron-sheet.png",
+      "phases": [
+        {
+          "phase": "baseline",
+          "observedUtc": "2026-11-10T05:16:01.975Z",
+          "networkTick": 282732,
+          "hopperEnabled": true,
+          "depotItems": [],
+          "chestIronSheets": 1,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 0,
+          "sequence": 50788,
+          "coverage": "partial_hook_not_yet_observed",
+          "transferTick": null,
+          "transferUtc": null,
+          "raw": "integration-test/evidence/rc1-final-press-baseline.json"
+        },
+        {
+          "phase": "locked",
+          "observedUtc": "2026-11-10T05:19:48.259Z",
+          "networkTick": 287258,
+          "hopperEnabled": false,
+          "depotItems": [
+            {
+              "slot": 0,
+              "id": "create:iron_sheet",
+              "count": 1
+            }
+          ],
+          "chestIronSheets": 1,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 0,
+          "sequence": 50788,
+          "coverage": "partial_hook_not_yet_observed",
+          "transferTick": null,
+          "transferUtc": null,
+          "raw": "integration-test/evidence/rc1-final-press-locked.json"
+        },
+        {
+          "phase": "collected",
+          "observedUtc": "2026-11-10T05:20:39.970Z",
+          "networkTick": 288292,
+          "hopperEnabled": true,
+          "depotItems": [],
+          "chestIronSheets": 2,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 1,
+          "sequence": 51940,
+          "coverage": "partial_boundary_only",
+          "transferTick": 288239,
+          "transferUtc": "2026-11-10T05:20:37.270705300Z",
+          "raw": "integration-test/evidence/rc1-final-press-collected.json"
+        },
+        {
+          "phase": "reloaded",
+          "observedUtc": "2026-11-10T05:22:31.125Z",
+          "networkTick": 288770,
+          "hopperEnabled": true,
+          "depotItems": [],
+          "chestIronSheets": 2,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 1,
+          "sequence": 51940,
+          "coverage": "partial_restart_gap",
+          "transferTick": 288239,
+          "transferUtc": "2026-11-10T05:20:37.270705300Z",
+          "raw": "integration-test/evidence/rc1-final-press-reloaded.json"
+        },
+        {
+          "phase": "reloaded-locked",
+          "observedUtc": "2026-11-10T05:23:59.963Z",
+          "networkTick": 290547,
+          "hopperEnabled": false,
+          "depotItems": [
+            {
+              "slot": 0,
+              "id": "create:iron_sheet",
+              "count": 1
+            }
+          ],
+          "chestIronSheets": 2,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 1,
+          "sequence": 51940,
+          "coverage": "partial_restart_gap",
+          "transferTick": 288239,
+          "transferUtc": "2026-11-10T05:20:37.270705300Z",
+          "raw": "integration-test/evidence/rc1-final-press-reloaded-locked.json"
+        },
+        {
+          "phase": "reloaded-collected",
+          "observedUtc": "2026-11-10T05:24:04.480Z",
+          "networkTick": 290637,
+          "hopperEnabled": true,
+          "depotItems": [],
+          "chestIronSheets": 3,
+          "meterId": "0de120d3-79c5-4275-96b2-8f1ad9a6b743",
+          "count": 2,
+          "sequence": 52432,
+          "coverage": "partial_restart_gap",
+          "transferTick": 290583,
+          "transferUtc": "2026-11-10T05:24:01.748048300Z",
+          "raw": "integration-test/evidence/rc1-final-press-reloaded-collected.json"
+        }
+      ],
+      "deltaPerTrial": {
+        "meter": 1,
+        "chest": 1
+      },
+      "persistedHistory": [
+        {
+          "file": "integration-test/evidence/rc1-final-transfer-history-first.json",
+          "records": 21,
+          "expectedChestCount": 2,
+          "chestSamples": 3
+        },
+        {
+          "file": "integration-test/evidence/rc1-final-transfer-history-second.json",
+          "records": 25,
+          "expectedChestCount": 3,
+          "chestSamples": 4
+        }
+      ],
+      "constructionEvidence": [
+        "integration-test/evidence/rc1-final-depot-restoration.json",
+        "integration-test/evidence/rc1-final-unlock-first.json",
+        "integration-test/evidence/rc1-final-lock-after-reload.json",
+        "integration-test/evidence/rc1-final-unlock-after-reload.json"
+      ]
+    },
+    "contraption": {
+      "status": "passed",
+      "tools": [
+        "list_moving_structures",
+        "inspect_moving_structure",
+        "get_structure_blocks",
+        "inspect_structure_motion"
+      ],
+      "structureId": "bf1ecbd8-d049-45ab-a223-76f54c69849a",
+      "entityType": "create:stationary_contraption",
+      "structureType": "bearing",
+      "bearingBlock": {
+        "x": -457,
+        "y": 82,
+        "z": 42
+      },
+      "entityPosition": {
+        "x": -457,
+        "y": 83,
+        "z": 42
+      },
+      "observedPivotCenter": {
+        "x": -456.5,
+        "y": 83.5,
+        "z": 42.5
+      },
+      "members": [
+        {
+          "id": "minecraft:slime_block",
+          "local": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "id": "minecraft:oak_planks",
+          "local": {
+            "x": 1,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "gameTicks": [
+        281378,
+        281381,
+        281384,
+        281387,
+        281391,
+        281394
+      ],
+      "plankFirst": {
+        "x": -455.53138250112534,
+        "y": 83.5,
+        "z": 42.25144383311272
+      },
+      "plankLast": {
+        "x": -456.5208031143993,
+        "y": 83.5,
+        "z": 41.50021642446518
+      },
+      "check": "All six sampled member centers agreed with their projected local coordinates. The pivot matched the fixed fixture block center and the plank stayed one horizontal block away at the same height.",
+      "screenshot": "integration-test/evidence/rc1-final-bearing.png",
+      "raw": "integration-test/evidence/rc1-final-fullpack-motion.json"
+    }
+  }
+}

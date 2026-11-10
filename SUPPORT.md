@@ -1,20 +1,3 @@
 # Support
 
-MCP Fabric support covers installation, configuration, MCP client connection, and the public tool
-contract.
-
-Before asking for help:
-
-1. Read the [quick start](README.md#quick-start) and confirm you downloaded the jar matching your
-   Minecraft version.
-2. Run `get_status` to confirm which client/server capability groups are available.
-3. Check that `MCPFABRIC_URL` matches the bridge address and that `MCPFABRIC_TOKEN` matches
-   `config/mcpfabric.config.json`.
-4. Search [existing issues](https://github.com/denfry/mcpfabric/issues).
-
-If the problem remains, open a
-[setup or usage request](https://github.com/denfry/mcpfabric/issues/new?template=setup_help.yml).
-Include exact versions and the smallest relevant log excerpt.
-
-Never post your bridge token, full config file, private server address, player data, or other
-credentials. Report exploitable vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+Start with the [installation and troubleshooting guide](README.md). Check the Minecraft, NeoForge and Create versions and try the `get_status` MCP tool. For setup and usage problems, open an [issue in this repository](https://github.com/Rxwkovo/mcBridge/issues) with the versions, tool name and a minimal redacted error. Use the [security policy](SECURITY.md) for security reports.
