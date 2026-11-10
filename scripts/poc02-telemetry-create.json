@@ -1,0 +1,17 @@
+{
+  "calls": [
+    {
+      "name": "create_region_monitor",
+      "arguments": {
+        "name": "shaft-observation",
+        "areaId": "test",
+        "dimension": "minecraft:overworld",
+        "min": {"x":9,"y":128,"z":8},
+        "max": {"x":9,"y":128,"z":8},
+        "intervalTicks": 20,
+        "includeCapabilities": true,
+        "includeKinetic": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "partial_live_validation",
+  "environment": "Isolated dedicated server, Java 21, Minecraft 1.21.1, NeoForge 21.1.248, Create 6.0.10; minimal Create dependencies, not the full Mechanomania pack.",
+  "observed": [
+    "An authorized one-block monitor was created through MCP at overworld (9,128,8), using a 20-tick interval.",
+    "History contained actual create:shaft samples with RPM -8, theoretical RPM -8, cached capacity 256 SU and cached consumption 64 SU; these runtime samples were not independently checked against a game instrument.",
+    "A separately authorized construction operation removed the shaft; history subsequently contained minecraft:air samples. A new authorized operation restored the shaft and history again contained create:shaft.",
+    "After graceful shutdown and restart the monitor and retained history were accessible, an explicit restart_observation_gap was present, and later samples were appended. The test did not exercise power loss.",
+    "The final build loaded the same monitor and reported historyTruncated=true after 64 retained events. Temporarily disabling the isolated work-area configuration made monitor, history and metric queries return not_found; the original test configuration bytes were restored."
+  ],
+  "evidence": ["integration-test/evidence/telemetry-before-restart.json", "integration-test/evidence/telemetry-after-shaft-removal.json", "integration-test/evidence/telemetry-after-restart.json", "integration-test/evidence/telemetry-after-restoration.json"],
+  "performance": {"history_request_ms_samples": [5.62, 4.96, 8.28, 6.92], "interpretation": "Single local calls, not a benchmark; TPS, MSPT, GC and storage growth not measured."},
+  "limits": [
+    "Prototype only: at most 16 monitors, 64 positions per monitor, four visits and a soft one-millisecond budget per tick; individual mod calls and policy file I/O can exceed the budget.",
+    "JSONL is limited to 4 MiB; at the limit persistence fails closed. No compaction, automatic retention, aggregation, long-term history database or configurable disk budget is implemented.",
+    "History queries retain at most the last 64 events per monitor in memory and now report truncation; arbitrary historical time ranges and windows are not implemented.",
+    "Sampling is periodic rather than event-driven; short-lived changes may be missed. Cross-tick samples are not atomic. Unloaded chunks are not loaded and create gaps.",
+    "Unsided capabilities may be unavailable or incomplete. Inventory differences are net changes only; no transfer or production counters, fluid flow, throughput, utilization curves or efficiency calculations are claimed.",
+    "Queue acknowledgement is not durability; bounded shutdown flush may time out. Abrupt crash and incomplete-tail recovery require further work.",
+    "Trusted policy is checked synchronously against disk; this fails closed on revocation but can itself stall the server thread and is not a scalable design."
+  ],
+  "remaining": ["Real metered production", "automatic retention and history queries", "crash/restart fault injection", "instrument comparison", "full Mechanomania client", "large-network and monitor performance tests"]
+}

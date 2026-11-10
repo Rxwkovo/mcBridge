@@ -1,0 +1,360 @@
+{
+  "status": "partial_real_world_validation",
+  "environment": "isolated minimal Create 6.0.10 server, not full Mechanomania",
+  "source": "actual pre-existing press monitoring records; gap fixtures belong to a different monitor",
+  "method": "bounded non-atomic scan, adjacent-sample time weighting; no endpoint extrapolation",
+  "observations": [
+    {
+      "requested": {
+        "monitorId": "8d659536-5bed-47cf-bc36-fb7ffd53a4b1",
+        "fromUtc": "2026-11-08T14:18:20Z",
+        "toUtc": "2026-11-08T14:19:10Z",
+        "timeBasis": "wall"
+      },
+      "result": {
+        "status": "ok",
+        "timeBasis": "wall_seconds",
+        "fromUtc": "2026-11-08T14:18:20Z",
+        "toUtc": "2026-11-08T14:19:10Z",
+        "sampleCount": 126,
+        "gapEvents": 0,
+        "rejectedIntervals": 0,
+        "incompleteActiveTailIgnored": false,
+        "coverageStatus": "observed_intervals_only",
+        "throughputStatus": "unsupported_no_transfer_counter",
+        "productionStatus": "unsupported_no_production_counter",
+        "method": "Previous-sample hold between adjacent samples only; intervals over 30 wall seconds or the tick-gap bound are excluded. No boundary extrapolation; SU is cached stress, not energy.",
+        "maxTickGap": 72,
+        "points": [
+          {
+            "position": {
+              "x": 6,
+              "y": 126,
+              "z": 8
+            },
+            "kineticSamples": 0,
+            "observedWeight": 0,
+            "kineticCoverageFraction": 0,
+            "inventoryNetStatus": "observed_sample_pairs_only",
+            "inventoryNetChange": {
+              "create:iron_sheet": 1
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 127,
+              "z": 8
+            },
+            "kineticSamples": 0,
+            "observedWeight": 0,
+            "kineticCoverageFraction": 0,
+            "inventoryNetStatus": "unavailable"
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 128,
+              "z": 8
+            },
+            "kineticSamples": 42,
+            "observedWeight": 46.9,
+            "kineticCoverageFraction": 0.938,
+            "minRpm": -8,
+            "maxRpm": -8,
+            "averageRpm": -8,
+            "rotationNonzeroDuration": 46.9,
+            "zeroRpmDuration": 0,
+            "overloadObservedDuration": 46.9,
+            "overloadedDuration": 0,
+            "averageStressSU": 128,
+            "peakStressSU": 128,
+            "averageCapacitySU": 256,
+            "peakCapacitySU": 256,
+            "averageUtilization": 0.5,
+            "peakUtilization": 0.5,
+            "inventoryNetStatus": "unavailable"
+          }
+        ],
+        "consistency": "non_atomic_disk_scan",
+        "scanCompletedUtc": "2026-11-08T15:18:28.242785200Z"
+      }
+    },
+    {
+      "requested": {
+        "monitorId": "8d659536-5bed-47cf-bc36-fb7ffd53a4b1",
+        "fromTick": 19950,
+        "toTick": 20250,
+        "timeBasis": "game_ticks"
+      },
+      "result": {
+        "status": "ok",
+        "timeBasis": "game_ticks",
+        "fromTick": 19950,
+        "toTick": 20250,
+        "sampleCount": 39,
+        "gapEvents": 0,
+        "rejectedIntervals": 0,
+        "incompleteActiveTailIgnored": false,
+        "coverageStatus": "observed_intervals_only",
+        "throughputStatus": "unsupported_no_transfer_counter",
+        "productionStatus": "unsupported_no_production_counter",
+        "method": "Previous-sample hold between adjacent samples only; intervals over 30 wall seconds or the tick-gap bound are excluded. No boundary extrapolation; SU is cached stress, not energy.",
+        "maxTickGap": 72,
+        "points": [
+          {
+            "position": {
+              "x": 6,
+              "y": 126,
+              "z": 8
+            },
+            "kineticSamples": 0,
+            "observedWeight": 0,
+            "kineticCoverageFraction": 0,
+            "inventoryNetStatus": "observed_sample_pairs_only",
+            "inventoryNetChange": {
+              "create:iron_sheet": 1
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 127,
+              "z": 8
+            },
+            "kineticSamples": 0,
+            "observedWeight": 0,
+            "kineticCoverageFraction": 0,
+            "inventoryNetStatus": "unavailable"
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 128,
+              "z": 8
+            },
+            "kineticSamples": 13,
+            "observedWeight": 279,
+            "kineticCoverageFraction": 0.93,
+            "minRpm": -8,
+            "maxRpm": -8,
+            "averageRpm": -8,
+            "rotationNonzeroDuration": 279,
+            "zeroRpmDuration": 0,
+            "overloadObservedDuration": 279,
+            "overloadedDuration": 0,
+            "averageStressSU": 128,
+            "peakStressSU": 128,
+            "averageCapacitySU": 256,
+            "peakCapacitySU": 256,
+            "averageUtilization": 0.5,
+            "peakUtilization": 0.5,
+            "inventoryNetStatus": "unavailable"
+          }
+        ],
+        "consistency": "non_atomic_disk_scan",
+        "scanCompletedUtc": "2026-11-08T15:19:14.831332100Z"
+      }
+    }
+  ],
+  "limitations": [
+    "No reliable transfer counter, production rate, or energy accounting",
+    "No historical index or pre-aggregation; full bounded journal scan",
+    "Durations reflect observed sample intervals and rotation, not verified machine operation",
+    "No full-pack or large-scale performance validation",
+    "Both real processing windows used the same load; no efficiency-change conclusion is supported."
+  ],
+  "comparison": [
+    {
+      "requested": {
+        "monitorId": "8d659536-5bed-47cf-bc36-fb7ffd53a4b1",
+        "firstFromUtc": "2026-11-08T14:18:20Z",
+        "firstToUtc": "2026-11-08T14:19:10Z",
+        "secondFromUtc": "2026-11-08T14:22:45Z",
+        "secondToUtc": "2026-11-08T14:23:15Z"
+      },
+      "result": {
+        "status": "ok",
+        "first": {
+          "status": "ok",
+          "timeBasis": "wall_seconds",
+          "fromUtc": "2026-11-08T14:18:20Z",
+          "toUtc": "2026-11-08T14:19:10Z",
+          "sampleCount": 126,
+          "gapEvents": 0,
+          "rejectedIntervals": 0,
+          "incompleteActiveTailIgnored": false,
+          "coverageStatus": "observed_intervals_only",
+          "throughputStatus": "unsupported_no_transfer_counter",
+          "productionStatus": "unsupported_no_production_counter",
+          "method": "Previous-sample hold between adjacent samples only; intervals over 30 wall seconds or the tick-gap bound are excluded. No boundary extrapolation; SU is cached stress, not energy.",
+          "maxTickGap": 72,
+          "points": [
+            {
+              "position": {
+                "x": 6,
+                "y": 126,
+                "z": 8
+              },
+              "kineticSamples": 0,
+              "observedWeight": 0,
+              "kineticCoverageFraction": 0,
+              "inventoryNetStatus": "observed_sample_pairs_only",
+              "inventoryNetChange": {
+                "create:iron_sheet": 1
+              }
+            },
+            {
+              "position": {
+                "x": 6,
+                "y": 127,
+                "z": 8
+              },
+              "kineticSamples": 0,
+              "observedWeight": 0,
+              "kineticCoverageFraction": 0,
+              "inventoryNetStatus": "unavailable"
+            },
+            {
+              "position": {
+                "x": 6,
+                "y": 128,
+                "z": 8
+              },
+              "kineticSamples": 42,
+              "observedWeight": 46.9,
+              "kineticCoverageFraction": 0.938,
+              "minRpm": -8,
+              "maxRpm": -8,
+              "averageRpm": -8,
+              "rotationNonzeroDuration": 46.9,
+              "zeroRpmDuration": 0,
+              "overloadObservedDuration": 46.9,
+              "overloadedDuration": 0,
+              "averageStressSU": 128,
+              "peakStressSU": 128,
+              "averageCapacitySU": 256,
+              "peakCapacitySU": 256,
+              "averageUtilization": 0.5,
+              "peakUtilization": 0.5,
+              "inventoryNetStatus": "unavailable"
+            }
+          ],
+          "consistency": "non_atomic_disk_scan",
+          "scanCompletedUtc": "2026-11-08T15:24:40.647046200Z"
+        },
+        "second": {
+          "status": "ok",
+          "timeBasis": "wall_seconds",
+          "fromUtc": "2026-11-08T14:22:45Z",
+          "toUtc": "2026-11-08T14:23:15Z",
+          "sampleCount": 78,
+          "gapEvents": 0,
+          "rejectedIntervals": 0,
+          "incompleteActiveTailIgnored": false,
+          "coverageStatus": "observed_intervals_only",
+          "throughputStatus": "unsupported_no_transfer_counter",
+          "productionStatus": "unsupported_no_production_counter",
+          "method": "Previous-sample hold between adjacent samples only; intervals over 30 wall seconds or the tick-gap bound are excluded. No boundary extrapolation; SU is cached stress, not energy.",
+          "maxTickGap": 72,
+          "points": [
+            {
+              "position": {
+                "x": 6,
+                "y": 126,
+                "z": 8
+              },
+              "kineticSamples": 0,
+              "observedWeight": 0,
+              "kineticCoverageFraction": 0,
+              "inventoryNetStatus": "observed_sample_pairs_only",
+              "inventoryNetChange": {
+                "create:iron_sheet": 1
+              }
+            },
+            {
+              "position": {
+                "x": 6,
+                "y": 127,
+                "z": 8
+              },
+              "kineticSamples": 0,
+              "observedWeight": 0,
+              "kineticCoverageFraction": 0,
+              "inventoryNetStatus": "unavailable"
+            },
+            {
+              "position": {
+                "x": 6,
+                "y": 128,
+                "z": 8
+              },
+              "kineticSamples": 26,
+              "observedWeight": 28.8,
+              "kineticCoverageFraction": 0.9600000000000001,
+              "minRpm": -8,
+              "maxRpm": -8,
+              "averageRpm": -8,
+              "rotationNonzeroDuration": 28.8,
+              "zeroRpmDuration": 0,
+              "overloadObservedDuration": 28.8,
+              "overloadedDuration": 0,
+              "averageStressSU": 128,
+              "peakStressSU": 128,
+              "averageCapacitySU": 256,
+              "peakCapacitySU": 256,
+              "averageUtilization": 0.5,
+              "peakUtilization": 0.5,
+              "inventoryNetStatus": "unavailable"
+            }
+          ],
+          "consistency": "non_atomic_disk_scan",
+          "scanCompletedUtc": "2026-11-08T15:24:40.737437Z"
+        },
+        "interpretation": "Differences compare observed sample-weighted values; coverage, gaps, caching and different windows limit causal conclusions.",
+        "points": [
+          {
+            "position": {
+              "x": 6,
+              "y": 126,
+              "z": 8
+            },
+            "deltaSecondMinusFirst": {
+              "kineticCoverageFraction": 0
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 127,
+              "z": 8
+            },
+            "deltaSecondMinusFirst": {
+              "kineticCoverageFraction": 0
+            }
+          },
+          {
+            "position": {
+              "x": 6,
+              "y": 128,
+              "z": 8
+            },
+            "deltaSecondMinusFirst": {
+              "averageRpm": 0,
+              "minRpm": 0,
+              "maxRpm": 0,
+              "averageStressSU": 0,
+              "peakStressSU": 0,
+              "averageCapacitySU": 0,
+              "peakCapacitySU": 0,
+              "averageUtilization": 0,
+              "peakUtilization": 0,
+              "kineticCoverageFraction": 0.02200000000000013
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "kineticHistoryVerified": true
+}

@@ -1,0 +1,8 @@
+{
+  "status": "research_only",
+  "source": "Local Create 6.0.10 jar inspected with javap; NeoForge capability implementation inspected in this project.",
+  "finding": "Create FunnelBlockEntity.onTransfer(ItemStack) is invoked before the final insert in at least one handleDirectBeltInput path. It cannot unconditionally prove a successful accepted transfer. Other paths call it after extraction but before subsequent delivery.",
+  "belt_research": "Create 6.0.10 ItemHandlerBeltSegment has insertItem and extractItem results plus a simulation flag. Its insertion code can mutate the supplied ItemStack, so a correct adapter must capture the offered stack before the call and compare with the actual returned remainder. No interception or game validation was added.",
+  "limitations": ["No item or fluid transfer meter is implemented or live-tested.", "No FE transfer accounting is implemented.", "Existing inventory differences remain net changes and are not production, consumption or throughput.", "SU and FE remain separate; no conversion or energy integral is claimed."],
+  "next": "Identify explicit metering boundaries and intercept actual return values, including simulate=false, partial transfer, failure, direction and deduplication; then test with real controlled item and fluid movement."
+}

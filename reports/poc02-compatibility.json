@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "scope": "Mechanomania isolated production client compatibility",
+  "status": "prepared_not_launched",
+  "full_pack_compatible": "unverified",
+  "target": {
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.248",
+    "create": "6.0.10",
+    "java": "Temurin 21.0.12.1"
+  },
+  "isolated_root": "integration-test/production-client",
+  "launcher": "integration-test/production-client/HMCL.exe",
+  "prepare_script": "scripts/prepare-production-client.ps1",
+  "evidence": {
+    "original_mod_files": 206,
+    "missing_original_mods": 0,
+    "modified_original_mods": 0,
+    "bridge_added": true,
+    "bridge_sha256": "F04E72C05550A3504CA61C140BD614C6AA37C11215AC3B375971D558B74D6F17",
+    "assets_missing": 0,
+    "referenced_library_artifacts_missing": 27,
+    "missing_library_platforms": "all missing names identify Linux, macOS or objc; launcher resolution still unverified",
+    "copied_original_saves": false,
+    "copied_launcher_account_state": false,
+    "launcher_started": false
+  },
+  "config_differences": [
+    "numen_api-common.toml and resourceful-config-web.json omitted due to credential-like keys; key names alone do not establish presence of secrets",
+    "mcpfabric.config.json newly created with loopback binding, authentication and disabled write/command/player control"
+  ],
+  "limitations": [
+    "No GUI production launch, authentication, world loading, Mixin validation, Create machinery or MCP calls performed for this client.",
+    "Full pack compatibility is unverified; no outcome is inferred from the minimum-mod dedicated server.",
+    "HMCL root selection and missing library handling must be verified before launch; use a separately authenticated user session, without copying or exposing account credentials.",
+    "Candidate configuration omission may affect functionality; preserve original instance unchanged."
+  ],
+  "steps": [
+    "Start the isolated launcher and verify it uses only its isolated .minecraft directory.",
+    "Sign in using the normal authentication flow; do not copy credentials from the original launcher.",
+    "Create a new disposable world, confirm the full mod list and inspect launch logs for actual errors.",
+    "Use the generated read-only token locally and run MCP acceptance checks."
+  ],
+  "staging_note": "The initial preparation copied the two candidate config files from the existing isolated instance before removing them from the production-client copy. Their values were not inspected. The preparation script has since been changed to exclude them before copying."
+}

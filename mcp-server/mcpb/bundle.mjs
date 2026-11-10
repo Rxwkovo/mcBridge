@@ -1,4 +1,4 @@
-// Builds dist/mcpfabric-<version>.mcpb, a one-click install for Claude Desktop: the compiled
+// Builds dist/mechagent-bridge-<version>.mcpb, a one-click install for Claude Desktop: the compiled
 // server, its production dependencies and manifest.json, packed with the official mcpb CLI.
 // Usage: npm run bundle (needs network access for npm and the CLI).
 import { execFileSync } from "node:child_process";
@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 const stage = join(root, ".mcpb-stage");
-const out = join(root, "dist-mcpb", `mcpfabric-${pkg.version}.mcpb`);
+const out = join(root, "dist-mcpb", `mechagent-bridge-${pkg.version}.mcpb`);
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
 const npx = process.platform === "win32" ? "npx.cmd" : "npx";
 // npm and npx are .cmd scripts on Windows, which only run through a shell.

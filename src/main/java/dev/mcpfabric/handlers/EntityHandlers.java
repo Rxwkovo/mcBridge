@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -40,6 +41,7 @@ public final class EntityHandlers {
 
 	public static void register(RpcRouter router) {
 		router.register("entities.query", ctx -> onServer(server -> {
+			Gates.vision();
 			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
 			double radius = ctx.optDouble("radius", 32.0);
 			Vec3 center;
@@ -93,6 +95,7 @@ public final class EntityHandlers {
 		}));
 
 		router.register("entities.get", ctx -> onServer(server -> {
+			Gates.vision();
 			UUID uuid = parseUuid(ctx.getString("uuid"));
 			for (ServerLevel level : server.getAllLevels()) {
 				Entity e = level.getEntity(uuid);
@@ -148,6 +151,14 @@ public final class EntityHandlers {
 		o.addProperty("y", e.getY());
 		o.addProperty("z", e.getZ());
 		o.addProperty("distance", e.position().distanceTo(from));
+		if (e instanceof ItemEntity item) {
+			ItemStack stack = item.getItem();
+			JsonObject observed = new JsonObject();
+			observed.addProperty("id", BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+			observed.addProperty("count", stack.getCount());
+			observed.addProperty("components", "not_collected");
+			o.add("item", observed);
+		}
 		if (e instanceof LivingEntity le) {
 			o.addProperty("health", le.getHealth());
 			o.addProperty("maxHealth", le.getMaxHealth());

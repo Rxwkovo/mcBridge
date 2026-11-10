@@ -1,7 +1,6 @@
-# Contributing to mcpfabric
+# Contributing to MechAgent Bridge
 
-Thanks for your interest in improving mcpfabric! This document explains the project layout,
-the multi-version build, and how to get a change merged.
+The release target is Minecraft 1.21.1 with NeoForge 21.1.248. The repository keeps inherited source nodes for development. Run :1.21.1-neoforge:build and the MCP tests before opening a PR.
 
 ## Project layout
 
@@ -10,7 +9,6 @@ mcpfabric/
 ├─ build.gradle              # Fabric build (Loom), applied to every Fabric node
 ├─ build.neoforge.gradle     # NeoForge build (ModDevGradle), applied to every NeoForge node
 ├─ gradle/common.gradle      # java/jar/publishing + loader source filtering, shared by both
-├─ gradle/modrinth.gradle    # Modrinth publishing, shared by both
 ├─ stonecutter.gradle        # Stonecutter controller (active version, chiseled tasks)
 ├─ settings.gradle           # declares the nodes (Minecraft version × loader)
 ├─ gradle.properties         # shared build config (loom/loader/mod version)

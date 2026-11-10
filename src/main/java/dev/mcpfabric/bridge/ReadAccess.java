@@ -9,8 +9,9 @@ import java.util.Set;
  */
 public final class ReadAccess {
 	static final Set<String> METHODS = Set.of(
-			"info.status", "info.capabilities", "session.info",
-			"world.inspectCreateNetwork", "world.inspectCreateKinetic", "world.inspectBlockEntity", "world.listRegisteredBlocks", "world.getBlock", "world.getBlocks", "world.findBlocks", "world.getTimeAndWeather", "world.getDimensions", "world.raycast",
+			"info.status", "info.capabilities", "info.environmentCapabilities", "session.info", "construction.query", "telemetry.list", "telemetry.get", "telemetry.history", "telemetry.metrics", "telemetry.kineticHistory", "telemetry.comparePeriods", "telemetry.queryMeter",
+			"world.listMovingStructures", "world.inspectMovingStructure", "world.getStructureBlocks", "world.inspectStructureMotion",
+			"world.runtimeCatalog", "world.inspectRecipe", "world.networkSummary", "world.networkJobStart", "world.networkJobStatus", "world.networkJobCancel", "world.networkJobPage", "world.inspectCreateNetwork", "world.inspectCreateKinetic", "world.inspectBlockEntity", "world.listRegisteredBlocks", "world.getBlock", "world.getBlocks", "world.findBlocks", "world.getTimeAndWeather", "world.getDimensions", "world.raycast",
 			"entities.query", "entities.get", "players.list", "players.get",
 			"chat.getRecent", "events.getRecent",
 			"player.getState", "player.getInventory", "player.getEquipment", "player.getStatusEffects",

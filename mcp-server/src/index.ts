@@ -201,7 +201,7 @@ const SCRIPT_INSTRUCTIONS =
 
 function buildServer(bridge: BridgeClient, runtime: AgentRuntime | undefined, scripts: ScriptHost | undefined, groups: Set<string>, channel = false): McpServer {
   const server = new McpServer(
-    { name: "mcpfabric", version: PKG_VERSION },
+    { name: "mechagent-bridge", version: PKG_VERSION },
     {
       instructions:
         BASE_INSTRUCTIONS + UNTRUSTED_INSTRUCTIONS + (runtime ? AGENT_INSTRUCTIONS : "") + (scripts ? SCRIPT_INSTRUCTIONS : "") + (channel ? CHANNEL_INSTRUCTIONS : ""),

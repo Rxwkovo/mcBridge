@@ -1,0 +1,8 @@
+{
+  "status": "partial",
+  "environment": "Isolated dedicated Minecraft 1.21.1 / NeoForge 21.1.248 / Create 6.0.10 server, not full Mechanomania.",
+  "observed": "Simulated incomplete journal tail was quarantined and the pre-existing shaft monitor was readable after startup, with a gap and counters.",
+  "segmented_observation": "A labelled test-gap fixture filled the isolated legacy journal near its limit. Live sampling rotated to a new segment, the monitor survived a normal restart, and the final JAR reported 14 queued/persisted/force-completed records. A later build returned two MCP disk-history pages across the segment boundary (21450–21453).",
+  "not_performed": ["production-line conservation test", "continuous item extraction", "fluid transfer", "FE transfer", "power overload", "actual abnormal process exit", "full Mechanomania compatibility"],
+  "evidence": "integration-test/evidence/telemetry-poc03-tail-recovery.json"
+}

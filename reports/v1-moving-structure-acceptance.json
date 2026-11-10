@@ -1,0 +1,145 @@
+{
+  "status": "minecart_bearing_piston_passed_partial_matrix",
+  "date": "2026-11-09",
+  "environment": {
+    "java": "21.0.12.1",
+    "minecraft": "1.21.1",
+    "loader": "NeoForge 21.1.248",
+    "create": "6.0.10",
+    "profile": "Native Create isolated dedicated server"
+  },
+  "sha256": "c25efed090457a7b88390af2afefef567c54bb66e0d13b57b54744a0492de7f2",
+  "firstSmokeBuildSha256": "244afa0c9bbe9c63849a07c4d6b1c6037b48ec595f77d09805e4249d6697333f",
+  "fixture": "scripts/profiles/README.md",
+  "sampler": "scripts/isolated-moving-acceptance.mjs",
+  "method": "Authorized isolated local console prepared the cart and rails and supplied initial motion. The observations used the read token through MCP stdio.",
+  "assembly": {
+    "gameTime": 92053,
+    "blockIds": [
+      "create:minecart_anchor",
+      "minecraft:oak_planks"
+    ],
+    "oakLocal": [
+      0,
+      1,
+      0
+    ],
+    "oakWorldCenter": {
+      "x": 66.5,
+      "y": 101.56,
+      "z": 0.5
+    },
+    "stableTwoPageSnapshot": true,
+    "affineProjectionMatched": true
+  },
+  "motion": {
+    "samples": 70,
+    "loadedSamples": 53,
+    "firstTick": 92480,
+    "lastTick": 92586,
+    "maxEntityX": 92.72856351774409,
+    "maxAnchorDisplacementBlocksPerTick": 0.4000000059604645
+  },
+  "disassembly": {
+    "gameTime": 92602,
+    "entityLookup": "not_found_or_unloaded",
+    "worldBlock": "minecraft:oak_planks",
+    "worldPosition": [
+      93,
+      101,
+      0
+    ]
+  },
+  "telemetry": {
+    "history": [
+      {
+        "gameTime": 92449,
+        "entityX": [
+          66.5
+        ]
+      },
+      {
+        "gameTime": 92499,
+        "entityX": [
+          68.37588157257801
+        ]
+      },
+      {
+        "gameTime": 92554,
+        "entityX": [
+          90.3285634819813
+        ]
+      },
+      {
+        "gameTime": 92606,
+        "entityX": []
+      }
+    ],
+    "retainedSamplesAfterCleanRestart": 4,
+    "coverage": "bounded loaded origins in the authorized area; disappearance is ambiguous without a world check"
+  },
+  "performance": {
+    "samples": 70,
+    "median": 121,
+    "p95": 346,
+    "max": 578
+  },
+  "unverified": [
+    "Live elevator and train tests",
+    "Angular velocity, internal capabilities and explicit assembly/disassembly event attribution",
+    "Large structure caps and expiry under sustained live load",
+    "Mechanomania on this artifact"
+  ],
+  "nativeFollowUp": {
+    "bearing": {
+      "status": "passed",
+      "inputRpm": 16,
+      "memberIds": [
+        "minecraft:slime_block",
+        "minecraft:oak_planks"
+      ],
+      "captureTicks": [
+        102203,
+        102206,
+        102209,
+        102212,
+        102214
+      ],
+      "firstXAxis": {
+        "x": 0.985990047454834,
+        "y": 0,
+        "z": 0.16680404543876648
+      },
+      "lastXAxis": {
+        "x": 0.7289896011352539,
+        "y": 0,
+        "z": -0.6845247149467468
+      },
+      "affineProjectionMatched": true,
+      "pagination": {
+        "status": "passed",
+        "captureGameTime": 108049,
+        "nextPageGameTime": 108049,
+        "delayMillis": 120,
+        "transformIdentical": true
+      }
+    },
+    "piston": {
+      "status": "passed",
+      "inputRpm": -16,
+      "captureTick": 104090,
+      "observedSamples": 67,
+      "memberCount": 8,
+      "maxAnchorDisplacementXPerTick": 0.03125,
+      "extensionBlocks": 6,
+      "payloadReturnedToWorldAt": [
+        77,
+        114,
+        5
+      ],
+      "affineProjectionMatched": true
+    },
+    "source": "isolated Native Create server, existing candidate JAR; fixture commands place blocks and supply native power, observation via MCP read token",
+    "date": "2026-11-09"
+  }
+}

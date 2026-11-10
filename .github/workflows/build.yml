@@ -1,64 +1,54 @@
-name: Build
+name: Build and verify
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
 
 jobs:
-  mod:
-    name: Build mod (all versions)
+  verify:
+    name: NeoForge 1.21.1 and MCP server
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - name: Set up JDKs (21 for 1.21.x, 25 for 26.x)
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v5
         with:
           distribution: temurin
           java-version: |
             21
             25
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
         with:
           cache-read-only: ${{ github.event_name == 'pull_request' }}
-
-      - name: Build every supported Minecraft version
-        # The daemon runs on JDK 25 (last setup-java entry); tell Gradle where both JDKs live so the
-        # 1.21.x compile toolchain (21) is found without re-downloading it via the foojay resolver.
-        run: ./gradlew chiseledBuild --stacktrace -Dorg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64,JAVA_HOME_25_X64
-
-      - name: Upload jars
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
-        with:
-          name: mcpfabric-jars
-          path: |
-            versions/*/build/libs/*.jar
-            !versions/*/build/libs/*-sources.jar
-          if-no-files-found: error
-
-  mcp-server:
-    name: MCP server (typecheck + test + build)
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mcp-server
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: npm
           cache-dependency-path: mcp-server/package-lock.json
-
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+      - name: Build and test the supported mod
+        run: ./gradlew :1.21.1-neoforge:build --no-daemon --max-workers=2 -Dorg.gradle.java.installations.fromEnv=JAVA_HOME_21_X64,JAVA_HOME_25_X64
+      - name: Check and test the MCP server
+        working-directory: mcp-server
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+      - name: Package and inspect release candidates
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            node scripts/package-release.mjs "$GITHUB_REF_NAME"
+          else
+            node scripts/package-release.mjs
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: mechagent-bridge
+          path: release-assets/
+          if-no-files-found: error

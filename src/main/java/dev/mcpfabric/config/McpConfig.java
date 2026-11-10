@@ -64,6 +64,13 @@ public final class McpConfig {
 	public boolean enableVision = true;
 	/** Allow discovery of registered block definitions, independently of world observation. */
 	public boolean enableRegistryRead = true;
+	/** Full-token authority. Unknown modes fail closed; readToken remains observation-only. */
+	public String accessMode = "READ_ONLY";
+	public boolean allowAdmin = false;
+	public int networkMemberLimit = 4096;
+	public int networkTickBudgetMicros = 1000;
+	public int networkNodesPerTick = 128;
+	public long networkGlobalBudgetBytes = 33554432L;
 	/** Generic control of game screens (ui.*). Off by default; also needs enablePlayerControl. */
 	public boolean enableUiControl = false;
 	/**

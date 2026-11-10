@@ -1,0 +1,388 @@
+{
+  "status": "passed_fullpack_acceptance",
+  "date": "2026-11-10",
+  "environment": "Mechanomania 1.1.13.1 isolated integrated client plus isolated Native Create dedicated server. Java 21, Minecraft 1.21.1, NeoForge 21.1.248, Create 6.0.10.",
+  "factory_meter": {
+    "revocation": {
+      "before": 1,
+      "revoked_query": "not_found",
+      "sheet_transferred_during_revocation": 1,
+      "after_restore": 1,
+      "result": "scope denied and unauthorized transfer not counted; recovery did not provide a dedicated revocation gap"
+    },
+    "blocked_hopper": {
+      "locked_count": 1,
+      "after_unlock": 2,
+      "result": "no count while hopper disabled; not a simulated extraction failure test"
+    },
+    "forced_exit": {
+      "counter_before": 2,
+      "counter_after_restart": 2,
+      "post_restart": 3,
+      "pre_exit_tick": 54806,
+      "post_restart_tick": 54095,
+      "world_save": "game tick moved backwards; world and telemetry journal are not an atomic transaction",
+      "result": "single observed recovery, not crash-consistency proof"
+    },
+    "latest_build": {
+      "prior_count": 3,
+      "after_one_sheet_journal_count": 4,
+      "mcp_query": "did not complete before server shutdown",
+      "scope": "one observed record only"
+    }
+  },
+  "performance": {
+    "method": "two sequential 100 tick observations on minimal server, meter active but no ongoing transfer; not a benchmark",
+    "paused_monitors": {
+      "mean_ms": 1.5,
+      "p95_ms": 2.6,
+      "p99_ms": 4.2
+    },
+    "two_monitors_running": {
+      "mean_ms": 1.4,
+      "p95_ms": 3,
+      "p99_ms": 4.7
+    },
+    "request_ms": 11.7893,
+    "request": "one list_region_monitors call, not a distribution",
+    "journal_bytes": 13504551,
+    "missing": [
+      "GC",
+      "JVM memory comparison",
+      "writer latency",
+      "sustained transfers",
+      "baseline with all telemetry disabled"
+    ]
+  },
+  "build": {
+    "neoforge": "passed, 118/118 Java tests",
+    "typescript": "passed",
+    "mcp": "127/127 passed",
+    "fabric": "offline dependency download failed; online retry produced no output and was interrupted",
+    "jar": "versions/1.21.1-neoforge/build/libs/mcpfabric-neoforge-0.9.1+1.21.1.jar",
+    "sha256": "D0E61045F10A30C96E9081C78779F854E78DD6FC69F7BAEDCA6FB25C97753B0D"
+  },
+  "blockers": [],
+  "prior_evidence": [
+    "reports/v1-throughput-acceptance.json",
+    "reports/v1-processing-acceptance.json",
+    "reports/v1-agent-acceptance.json"
+  ],
+  "fullpack_attempt": {
+    "status": "world_loaded_partial_readonly_validation",
+    "date": "2026-11-09",
+    "game_root": "integration-test/production-client/.minecraft",
+    "world": "new isolated MechAgent RC1 Test; creative, commands disabled",
+    "versions": "Minecraft 1.21.1, NeoForge 21.1.248, Create 6.0.10, Java 21",
+    "latest_bridge_sha256": "D0E61045F10A30C96E9081C78779F854E78DD6FC69F7BAEDCA6FB25C97753B0D",
+    "mod_files": "200 jar filenames in isolated mods and copied source instance, matching names; hashes and actual loaded mod count not established",
+    "initial_failures": [
+      "NeoForge client/universal runtime artifacts missing from isolated libraries",
+      "Minecraft 1.21.1 NeoForge-generated client runtime artifacts missing from isolated libraries"
+    ],
+    "fix": "Copied missing runtime artifacts into isolated client only; prepare-production-client.ps1 now includes required paths.",
+    "mcp": {
+      "get_status": "serverPresent=true, integratedServer=true, READ_ONLY",
+      "list_capabilities": "world read and registry read available; world write, command, player control and region build disabled",
+      "create_registry": "6 shaft-related Create registered blocks",
+      "get_block": "minecraft:air at sampled position",
+      "inspect_block_entity": "no_block_entity for that air position",
+      "recipe": "create:pressing/iron_ingot: candidate matches, display output create:iron_sheet x1"
+    },
+    "kubejs": "Startup 5/5, client 2/2, server 19/19 scripts reported zero errors and warnings",
+    "log_errors": "Iris shader pack invalid; Xaero online data expired; numerous loot table/recipe/data map errors and a Patchouli guidebook build error. Root cause and effects remain unverified.",
+    "unverified": [
+      "All-mod loaded count and hash equivalence",
+      "Create RPM/SU and instruments",
+      "block entity capabilities in the full pack",
+      "construction and undo",
+      "live production and meter",
+      "telemetry restart",
+      "full pack performance"
+    ],
+    "evidence": "integration-test/evidence/fullpack-readonly.json (local ignored file)"
+  },
+  "fullpack_baseline": {
+    "status": "historical_baseline_partial",
+    "bridgeSha256": "D0E61045F10A30C96E9081C78779F854E78DD6FC69F7BAEDCA6FB25C97753B0D",
+    "modInventory": {
+      "jarNames": 200,
+      "identicalHashes": 199,
+      "expectedChangedJar": "Bridge",
+      "otherFiles": "6 ZIP files and one disabled JAR",
+      "loaderEntriesIncludingNested": 288
+    },
+    "observations": {
+      "normal": {
+        "rpm": -8,
+        "theoreticalRpm": -8,
+        "consumptionSU": 64,
+        "capacitySU": 256,
+        "members": 3
+      },
+      "increasedLoad": {
+        "consumptionSU": 128,
+        "capacitySU": 256
+      },
+      "overload": {
+        "rpm": 0,
+        "theoreticalRpm": -8,
+        "consumptionSU": 320,
+        "capacitySU": 256
+      },
+      "shaftRemovalAndUndo": "observed disconnection and restored network",
+      "production": "one manually placed iron ingot processed to one iron sheet",
+      "meter": "count increased from 0 to 1; one sheet found in output chest",
+      "authorization": "read token denied mutations; out-of-area edit denied; duplicate key returned original operation"
+    },
+    "outstanding": [
+      "Gauge display comparison",
+      "Production and counter continuation after full-pack restart",
+      "Full-pack recovery, backpressure and sustained performance"
+    ],
+    "evidence": [
+      "integration-test/evidence/rc1-fullpack-build.json",
+      "integration-test/evidence/rc1-mod-hashes.json",
+      "integration-test/evidence/rc1-loaded-mods.json"
+    ]
+  },
+  "latest_acceptance": {
+    "status": "partial_not_release_ready",
+    "date": "2026-11-09",
+    "codeCommit": "b06797e",
+    "platform": {
+      "java": "21.0.12.1",
+      "minecraft": "1.21.1",
+      "loader": "NeoForge 21.1.248",
+      "create": "6.0.10"
+    },
+    "build": {
+      "javaTests": 119,
+      "javaFailed": 0,
+      "mcpTests": 127,
+      "mcpFailed": 0,
+      "typescript": "passed",
+      "jar": "versions/1.21.1-neoforge/build/libs/mcpfabric-neoforge-0.9.1+1.21.1.jar",
+      "sha256": "c25efed090457a7b88390af2afefef567c54bb66e0d13b57b54744a0492de7f2"
+    },
+    "profiles": {
+      "base": {
+        "status": "passed_smoke",
+        "create": "create_not_loaded",
+        "tags": [
+          "minecraft:dark_oak_log",
+          "minecraft:dark_oak_wood",
+          "minecraft:stripped_dark_oak_log"
+        ],
+        "selectedPacks": [
+          "vanilla",
+          "mod_data"
+        ]
+      },
+      "nativeCreate": {
+        "status": "passed_bounded_acceptance",
+        "rpm": -8,
+        "capacitySU": 256,
+        "stressSU": 128,
+        "movingReport": "reports/v1-moving-structure-acceptance.json",
+        "verifiedContraptions": [
+          "minecart",
+          "mechanical_bearing",
+          "mechanical_piston"
+        ]
+      },
+      "mechanomania": {
+        "status": "latest_jar_staged_retest_blocked",
+        "blockingReason": "HMCL was minimized; computer-use app approval timed out. No integrated world session observed with this artifact.",
+        "installedSha256": "c25efed090457a7b88390af2afefef567c54bb66e0d13b57b54744a0492de7f2",
+        "baseline": "See fullpack_baseline for earlier artifact observations."
+      }
+    },
+    "meter": {
+      "retainedCounterBeforeNewTests": 4,
+      "directFixtureSheet": {
+        "counter": 5,
+        "chest": 25
+      },
+      "pressedOneIngot": {
+        "counter": 6,
+        "chest": 26
+      },
+      "revokeDuringTransfer": {
+        "query": "not_found",
+        "restoredCounter": 6,
+        "chest": 27
+      },
+      "cleanRestart": {
+        "counter": 6,
+        "coverage": "partial_restart_gap"
+      },
+      "pressedOneIngotAfterRestart": {
+        "counter": 7,
+        "chest": 28
+      },
+      "source": "Fixture used the local isolated console to supply stock or put an iron ingot on the depot. Pressing and hopper extraction ran as Create and NeoForge game behavior."
+    },
+    "construction": {
+      "legacyMutationDenials": true,
+      "readToken403": true,
+      "idempotencyRepeatAndMismatch": true,
+      "stalePreviewDenied": true,
+      "undoRestoredShaft": true,
+      "cleanRestart": {
+        "status": "recovery_required",
+        "journalStatus": "completed",
+        "observation": "matches_after",
+        "replayed": false
+      }
+    },
+    "performance": {
+      "scope": "short samples on isolated Native Create server; no controlled long-run or full-pack comparison",
+      "baselineBeforeNewMovingMonitor": {
+        "meanMspt": 2.4,
+        "p95Mspt": 3.8,
+        "p99Mspt": 4.2,
+        "ticks": 100
+      },
+      "monitorAndMeterShortSample": {
+        "meanMspt": 1.6,
+        "p95Mspt": 4,
+        "p99Mspt": 4.6,
+        "ticks": 100
+      },
+      "monitorAndMeterWarmSample": {
+        "meanMspt": 1,
+        "p95Mspt": 1.5,
+        "p99Mspt": 2.1,
+        "ticks": 100
+      },
+      "tickRateTarget": 20,
+      "motionHandlerMicros": {
+        "samples": 70,
+        "median": 121,
+        "p95": 346,
+        "max": 578
+      },
+      "jvmHeapKiB": {
+        "committed": 763904,
+        "used": 443904
+      },
+      "journalBytes": 25600767,
+      "notes": "Samples are sequential windows with existing telemetry and live game activity. They do not isolate the causal cost of enabling monitoring. Minecraft tick query supplies target rate and MSPT.",
+      "mcpRoundTrip": {
+        "get_create_network_summary": {
+          "samples": 50,
+          "medianMs": 5.67,
+          "p95Ms": 11.25,
+          "maxMs": 11.65
+        },
+        "list_moving_structures": {
+          "samples": 50,
+          "medianMs": 5.18,
+          "p95Ms": 10.27,
+          "maxMs": 11.23
+        }
+      },
+      "jfr": {
+        "durationSeconds": 30,
+        "garbageCollectionEvents": 0,
+        "scope": "Short post-restart window, with telemetry enabled and an isolated production operation."
+      }
+    },
+    "remaining": [
+      "Latest-build full Mechanomania acceptance including in-game instruments",
+      "Elevator and train runtime checks",
+      "Forced mid-batch exit, unload, concurrent and timeout recovery, and end-to-end journal backpressure/failure",
+      "Representative sustained matched performance and full-pack measurement",
+      "Separate the opt-in fixture from the distribution when revising test packaging"
+    ],
+    "nativeScopeFollowUp": {
+      "date": "2026-11-09",
+      "artifactUnchanged": true,
+      "verified": [
+        "Minecart",
+        "Mechanical bearing with changing rotation and stable pagination",
+        "Mechanical piston with linear travel and payload restored"
+      ],
+      "pending": [
+        "Elevator",
+        "Train",
+        "Complete Mechanomania loaded-world retest on the same artifact"
+      ],
+      "fullpackBlocker": "The isolated launcher was still minimized and no Bridge listener was detected on the isolated client port."
+    }
+  },
+  "releaseScope": {
+    "java": "21",
+    "minecraft": "1.21.1",
+    "loader": "NeoForge 21.1.248",
+    "create": "6.0.10",
+    "included": [
+      "Native static kinetic networks",
+      "Work-area construction and recovery",
+      "Production telemetry and verified depot-to-hopper meter",
+      "Basic observation of loaded native Contraptions"
+    ],
+    "deferred": [
+      "Diesel adapter",
+      "Electrical adapter",
+      "Nuclear adapter",
+      "Aeronautics adapter",
+      "Fabric",
+      "Other Create versions"
+    ]
+  },
+  "current_candidate": {
+    "status": "passed_fullpack_acceptance",
+    "codeCommit": "9e40057ddb3fd20c18c07812aa3dba1264382bbb",
+    "jar": "versions/1.21.1-neoforge/build/libs/mcpfabric-neoforge-0.9.1+1.21.1.jar",
+    "sha256": "d4e082937275a5c12967c193c6c7859b8c44e2150858bb9667b43b4a021155ae",
+    "build": {
+      "javaTests": 119,
+      "javaFailures": 0,
+      "mcpTests": 127,
+      "mcpFailures": 0,
+      "typescript": "passed",
+      "mcpBuild": "passed",
+      "neoforgeCleanBuild": "passed"
+    },
+    "artifactAudit": {
+      "zipEntries": 185,
+      "worldMutationFixture": "removed",
+      "knownFixturePathOrSecretMatches": 0,
+      "license": "Include unchanged repository MIT license and copyright notice with the JAR.",
+      "publisherGuards": "Both inherited publishing jobs require github.repository == denfry/mcpfabric. No upstream push or tag."
+    },
+    "fullPackReport": "reports/v1-fullpack-acceptance.json",
+    "recoveryPerformanceReport": "reports/v1-rc1-recovery-performance.json",
+    "previouslyVerifiedNativeContraptions": [
+      "minecart",
+      "mechanical_bearing",
+      "mechanical_piston"
+    ],
+    "exactCandidateNativeRetest": [
+      "mechanical_bearing under load"
+    ],
+    "nonblockingUnverified": [
+      "elevator",
+      "train"
+    ],
+    "remaining": [
+      "Factory Meter cannot guarantee exactly-once recovery. Coverage may be partial after a restart, unloaded chunks or authorization changes.",
+      "The observed 55.3 ms Tick P99 remains unattributed. Keep it under observation. The existing short load test did not saturate the journal queue.",
+      "The journal has a finite quota. The isolated full-pack profile uses 128 MiB to retain earlier segments and continue writing.",
+      "Elevators and trains lack live acceptance evidence."
+    ],
+    "fullPackFinalGates": {
+      "instrumentComparison": "passed",
+      "pressAndMeterContinuation": "passed",
+      "nativeBearingObservation": "passed"
+    },
+    "releaseBuild": {
+      "task": ":1.21.1-neoforge:jar",
+      "expectedSha256": "d4e082937275a5c12967c193c6c7859b8c44e2150858bb9667b43b4a021155ae",
+      "verification": "The annotated release tag records the SHA-256 verified by a clean build at the tag target."
+    }
+  },
+  "releaseTag": "v1.0.0-rc.1"
+}

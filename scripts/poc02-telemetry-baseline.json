@@ -1,0 +1,12 @@
+{
+  "calls": [
+    {"name":"get_status","arguments":{}},
+    {"name":"get_block","arguments":{"x":8,"y":128,"z":8}},
+    {"name":"get_block","arguments":{"x":9,"y":128,"z":8}},
+    {"name":"get_block","arguments":{"x":10,"y":128,"z":8}},
+    {"name":"inspect_create_kinetic","arguments":{"x":8,"y":128,"z":8}},
+    {"name":"inspect_create_kinetic","arguments":{"x":10,"y":128,"z":8}},
+    {"name":"inspect_create_network","arguments":{"x":8,"y":128,"z":8,"limit":8}},
+    {"name":"inspect_block_entity","arguments":{"x":12,"y":128,"z":12}}
+  ]
+}

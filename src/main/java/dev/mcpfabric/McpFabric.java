@@ -66,10 +66,15 @@ public final class McpFabric {
 	public static void init(Platform loaderPlatform) {
 		platform = loaderPlatform;
 		config = McpConfig.load();
+		dev.mcpfabric.adapters.CreateNetworkJobs.configure(config.networkMemberLimit, config.networkTickBudgetMicros, config.networkNodesPerTick, config.networkGlobalBudgetBytes);
 		sseHub = new SseHub();
 		eventBus = new EventBus(sseHub);
 		router = new RpcRouter();
-		router.setGuard(Approvals::require);
+		router.setGuard((method, params) -> {
+			if (!dev.mcpfabric.bridge.AccessPolicy.allowed(config.accessMode, config.allowAdmin, method))
+				throw new dev.mcpfabric.bridge.RpcException("forbidden", "RPC is not authorized in the configured access mode.");
+			Approvals.require(method, params);
+		});
 		if (config.auditLog) {
 			audit = new AuditLog(platform.configDir().resolveSibling("logs").resolve("mcpfabric-audit.jsonl"));
 			router.setAudit(audit);
@@ -79,6 +84,8 @@ public final class McpFabric {
 		// the bus through GameEvents.
 		InfoHandlers.register(router);
 		WorldHandlers.register(router);
+		dev.mcpfabric.construction.ConstructionService.register(router);
+		dev.mcpfabric.handlers.TelemetryHandlers.register(router);
 		EntityHandlers.register(router);
 		PlayerAdminHandlers.register(router);
 		CommandHandlers.register(router);
@@ -112,11 +119,13 @@ public final class McpFabric {
 	/** The running server (dedicated or integrated) finished starting. */
 	public static void onServerStarted(MinecraftServer server) {
 		ServerHolder.set(server);
+		dev.mcpfabric.telemetry.FactoryTelemetry.start(server);
 		// On a client the context is the world the player is in, set by the client tick.
 		if (!platform.isClient()) supervisor.enterContext("server:" + server.getWorldData().getLevelName());
 	}
 
 	public static void onServerStopping(MinecraftServer server) {
+		dev.mcpfabric.telemetry.FactoryTelemetry.stop();
 		// Keep the bridge up across integrated-server restarts on the client; only stop it on a
 		// dedicated server shutdown.
 		if (!platform.isClient()) {
@@ -137,12 +146,18 @@ public final class McpFabric {
 	}
 
 	public static void onServerStopped(MinecraftServer server) {
+		dev.mcpfabric.construction.ConstructionService.clear(server);
+		dev.mcpfabric.adapters.CreateNetworkJobs.clear();
+		dev.mcpfabric.adapters.CreateAdapterProvider.moving().clear();
 		ServerHolder.set(null);
 		if (!platform.isClient()) supervisor.enterContext(null);
 	}
 
 	/** End of every server tick. */
 	public static void onServerTick(MinecraftServer server) {
+		dev.mcpfabric.construction.ConstructionService.tick(server);
+		dev.mcpfabric.telemetry.FactoryTelemetry.tick(server);
+		dev.mcpfabric.adapters.CreateNetworkJobs.tick(server);
 		try {
 			eventBus.setTick(server.overworld().getGameTime());
 		} catch (Throwable ignored) {

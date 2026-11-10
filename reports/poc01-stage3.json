@@ -1,0 +1,418 @@
+{
+  "environment": {
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.248",
+    "create": "6.0.10",
+    "java": "Temurin 21.0.12.1",
+    "pack": "minimal production Create dependencies; not complete Mechanomania"
+  },
+  "fixture": {
+    "fixture": "waterwheel_bubble_column",
+    "atomicSnapshot": false,
+    "note": "Actual water flow, game ticks and Create fields; overload depends on installed stress configuration.",
+    "samples": [
+      {
+        "stage": "normal",
+        "tick": 320,
+        "waterwheel": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "press": {
+          "status": "no_block_entity"
+        }
+      },
+      {
+        "stage": "add_one_consumer",
+        "tick": 620,
+        "waterwheel": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "press": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        }
+      },
+      {
+        "stage": "overload_attempt",
+        "tick": 920,
+        "waterwheel": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        },
+        "press": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        }
+      },
+      {
+        "stage": "disconnected",
+        "tick": 1220,
+        "waterwheel": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "no_block_entity"
+        },
+        "press": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": 0,
+          "overstressed": false
+        }
+      },
+      {
+        "stage": "reconnected_loaded",
+        "tick": 1520,
+        "waterwheel": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        },
+        "press": {
+          "status": "available",
+          "rpm": 0,
+          "theoreticalRpm": -8,
+          "overstressed": true,
+          "network": "2199023288448"
+        }
+      },
+      {
+        "stage": "remove_load",
+        "tick": 1820,
+        "waterwheel": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "shaft": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        },
+        "press": {
+          "status": "available",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "overstressed": false,
+          "network": "2199023288448"
+        }
+      }
+    ],
+    "phase": "complete",
+    "fixtureTicks": 1820,
+    "gameTime": 1820
+  },
+  "paginationVerifiedPages": 49,
+  "observedOverload": {
+    "tick": 654,
+    "capacitySU": 256,
+    "stressSU": 576,
+    "utilization": 2.25,
+    "members": 11
+  },
+  "capabilities": [
+    {
+      "name": "inspect_block_entity",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 12,
+        "includePersistent": true
+      },
+      "elapsedMs": 1.8652000000000726,
+      "bytes": 474,
+      "isError": false,
+      "result": {
+        "x": 8,
+        "y": 128,
+        "z": 12,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 129,
+        "status": "no_block_entity",
+        "observationMicros": 48
+      }
+    },
+    {
+      "name": "inspect_block_entity",
+      "args": {
+        "x": 10,
+        "y": 128,
+        "z": 12,
+        "includePersistent": true
+      },
+      "elapsedMs": 2.2001000000000204,
+      "bytes": 476,
+      "isError": false,
+      "result": {
+        "x": 10,
+        "y": 128,
+        "z": 12,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 129,
+        "status": "no_block_entity",
+        "observationMicros": 42
+      }
+    },
+    {
+      "name": "inspect_block_entity",
+      "args": {
+        "x": 12,
+        "y": 128,
+        "z": 12,
+        "includePersistent": true
+      },
+      "elapsedMs": 5.381899999999973,
+      "bytes": 1821,
+      "isError": false,
+      "result": {
+        "x": 12,
+        "y": 128,
+        "z": 12,
+        "id": "minecraft:chest",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "facing": "north",
+          "type": "single",
+          "waterlogged": "false"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 130,
+        "status": "available",
+        "blockEntityType": "minecraft:chest",
+        "persistentData": {
+          "status": "unavailable",
+          "reason": "Generic serialization has no enforceable allocation/time bound; use capabilities or a bounded adapter."
+        },
+        "capabilities": {
+          "scope": "unsided (null); sided capabilities may differ or be unavailable",
+          "items": {
+            "status": "available",
+            "slots": 27,
+            "truncated": false,
+            "contents": []
+          },
+          "fluids": {
+            "status": "unavailable"
+          },
+          "energy": {
+            "status": "unavailable"
+          }
+        },
+        "runtimeData": {
+          "status": "unsupported_without_adapter"
+        },
+        "observationMicros": 2582
+      }
+    },
+    {
+      "name": "inspect_block_entity",
+      "args": {
+        "x": 14,
+        "y": 128,
+        "z": 12,
+        "includePersistent": true
+      },
+      "elapsedMs": 1.8129999999999882,
+      "bytes": 2023,
+      "isError": false,
+      "result": {
+        "x": 14,
+        "y": 128,
+        "z": 12,
+        "id": "create:fluid_tank",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "bottom": "true",
+          "shape": "window",
+          "top": "true"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 130,
+        "status": "available",
+        "blockEntityType": "create:fluid_tank",
+        "persistentData": {
+          "status": "unavailable",
+          "reason": "Generic serialization has no enforceable allocation/time bound; use capabilities or a bounded adapter."
+        },
+        "capabilities": {
+          "scope": "unsided (null); sided capabilities may differ or be unavailable",
+          "items": {
+            "status": "unavailable"
+          },
+          "fluids": {
+            "status": "available",
+            "tanks": 1,
+            "truncated": false,
+            "contents": [
+              {
+                "tank": 0,
+                "fluid": "minecraft:empty",
+                "amount": 0,
+                "capacity": 8000
+              }
+            ]
+          },
+          "energy": {
+            "status": "unavailable"
+          }
+        },
+        "runtimeData": {
+          "status": "unsupported_without_adapter"
+        },
+        "observationMicros": 109
+      }
+    },
+    {
+      "name": "inspect_block_entity",
+      "args": {
+        "x": 16,
+        "y": 128,
+        "z": 12,
+        "includePersistent": true
+      },
+      "elapsedMs": 1.500699999999938,
+      "bytes": 476,
+      "isError": false,
+      "result": {
+        "x": 16,
+        "y": 128,
+        "z": 12,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 130,
+        "status": "no_block_entity",
+        "observationMicros": 47
+      }
+    }
+  ],
+  "metrics": {
+    "get_status": {
+      "count": 1,
+      "requestMsP50": 13.535999999999945,
+      "requestMsP95": 13.535999999999945,
+      "maxResponseBytes": 2724,
+      "maxObservationMicros": 0
+    },
+    "list_capabilities": {
+      "count": 1,
+      "requestMsP50": 2.5532000000000608,
+      "requestMsP95": 2.5532000000000608,
+      "maxResponseBytes": 1043,
+      "maxObservationMicros": 0
+    },
+    "list_registered_blocks": {
+      "count": 1,
+      "requestMsP50": 8.251800000000003,
+      "requestMsP95": 8.251800000000003,
+      "maxResponseBytes": 1995,
+      "maxObservationMicros": 3836
+    },
+    "get_block": {
+      "count": 2,
+      "requestMsP50": 3.8972000000001117,
+      "requestMsP95": 3.8972000000001117,
+      "maxResponseBytes": 957,
+      "maxObservationMicros": 856
+    },
+    "get_blocks_region": {
+      "count": 2,
+      "requestMsP50": 3.338999999999942,
+      "requestMsP95": 3.338999999999942,
+      "maxResponseBytes": 813,
+      "maxObservationMicros": 572
+    },
+    "inspect_block_entity": {
+      "count": 5,
+      "requestMsP50": 1.8652000000000726,
+      "requestMsP95": 5.381899999999973,
+      "maxResponseBytes": 2023,
+      "maxObservationMicros": 2582
+    },
+    "inspect_create_kinetic": {
+      "count": 62,
+      "requestMsP50": 2.0846999999994296,
+      "requestMsP95": 6.069800000001123,
+      "maxResponseBytes": 2584,
+      "maxObservationMicros": 2831
+    },
+    "inspect_create_network": {
+      "count": 111,
+      "requestMsP50": 1.579200000000128,
+      "requestMsP95": 3.4320999999981723,
+      "maxResponseBytes": 6203,
+      "maxObservationMicros": 4297
+    }
+  },
+  "limitations": [
+    "No graphical gauge comparison",
+    "Energy and filled inventories/tanks not tested",
+    "No TPS/MSPT measurement or large network benchmark",
+    "Generic persistence unavailable; serializer intentionally not invoked",
+    "No unchanged complete Mechanomania integration"
+  ]
+}

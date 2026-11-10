@@ -4,8 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.mcpfabric.McpFabric;
-import dev.mcpfabric.adapters.CreateKineticAdapter;
+import dev.mcpfabric.adapters.CreateAdapterProvider;
 import dev.mcpfabric.adapters.CreateNetworkAdapter;
+import dev.mcpfabric.adapters.CreateNetworkJobs;
 import dev.mcpfabric.ServerHolder;
 import dev.mcpfabric.bridge.MainThread;
 import dev.mcpfabric.bridge.RpcContext;
@@ -18,7 +19,8 @@ import dev.mcpfabric.handlers.support.RegionCursor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.NumericTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,14 +54,45 @@ public final class WorldHandlers {
 	private WorldHandlers() {}
 
 	public static void register(RpcRouter router) {
+		router.register("world.listMovingStructures", ctx -> onServer(server -> {
+			var level = Levels.resolve(server, ctx.optString("dimension", null));
+			double x = ctx.getDouble("x"), y = ctx.getDouble("y"), z = ctx.getDouble("z");
+			int radius = ctx.optInt("radius", 16);
+			if (radius < 1 || radius > 32 || !level.isInWorldBounds(BlockPos.containing(x, y, z)))
+				throw RpcException.badRequest("Invalid search center or radius (1..32).");
+			return CreateAdapterProvider.moving().list(level, new Vec3(x, y, z), radius);
+		}));
+		router.register("world.inspectMovingStructure", ctx -> onServer(server ->
+				CreateAdapterProvider.moving().inspect(
+						Levels.resolve(server, ctx.optString("dimension", null)), structureId(ctx))));
+		router.register("world.getStructureBlocks", ctx -> onServer(server ->
+				CreateAdapterProvider.moving().blocks(
+						Levels.resolve(server, ctx.optString("dimension", null)), structureId(ctx),
+						ctx.optString("snapshotId", null), ctx.optInt("offset", 0), ctx.optInt("limit", 32))));
+		router.register("world.inspectStructureMotion", ctx -> onServer(server -> {
+			var result = CreateAdapterProvider.moving().inspect(
+					Levels.resolve(server, ctx.optString("dimension", null)), structureId(ctx));
+			result.remove("internalCapabilityStatus");
+			return result;
+		}));
+		router.register("world.networkSummary", ctx -> onServer(server -> { ServerLevel level=Levels.resolve(server, ctx.optString("dimension", null)); BlockPos p=BlockPos.containing(ctx.getDouble("x"),ctx.getDouble("y"),ctx.getDouble("z")); if (!level.hasChunkAt(p)) throw RpcException.notFound("Chunk not loaded"); JsonObject result=CreateAdapterProvider.network().summary(level.getBlockEntity(p)); result.addProperty("gameTime",level.getGameTime()); return result; }));
+		router.register("world.networkJobStart", ctx -> onServer(server -> { ServerLevel level=Levels.resolve(server,ctx.optString("dimension",null)); return CreateNetworkJobs.start(level,BlockPos.containing(ctx.getDouble("x"),ctx.getDouble("y"),ctx.getDouble("z")),ctx.optInt("target",CreateNetworkJobs.DEFAULT_TARGET)); }));
+		router.register("world.networkJobStatus", ctx -> onServer(server -> CreateNetworkJobs.status(ctx.getString("jobId"))));
+		router.register("world.networkJobCancel", ctx -> onServer(server -> CreateNetworkJobs.cancel(ctx.getString("jobId"))));
+		router.register("world.networkJobPage", ctx -> onServer(server -> CreateNetworkJobs.page(ctx.getString("jobId"),ctx.optInt("offset",0),ctx.optInt("limit",32))));
 		router.register("world.inspectCreateNetwork", ctx -> onServer(server -> {
+			if (ctx.has("snapshotId")) {
+				String id = ctx.getString("snapshotId");
+				if (id.length() > 64) throw RpcException.badRequest("Invalid snapshotId.");
+				return CreateAdapterProvider.network().page(id, ctx.optInt("offset", 0), ctx.optInt("limit", 32));
+			}
 			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
 			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
 			int offset = ctx.optInt("offset", 0), limit = ctx.optInt("limit", 32);
 			if (offset < 0 || offset >= CreateNetworkAdapter.MAX_VISITS || limit < 1 || limit > CreateNetworkAdapter.MAX_PAGE_SIZE)
 				throw RpcException.badRequest("offset must be 0..4095 and limit 1..64.");
 			if (!level.hasChunkAt(pos)) throw RpcException.notFound("Chunk not loaded at " + pos.toShortString());
-			JsonObject result = CreateNetworkAdapter.inspect(level.getBlockEntity(pos), offset, limit);
+			JsonObject result = CreateAdapterProvider.network().inspect(level.getBlockEntity(pos), offset, limit);
 			result.addProperty("x", pos.getX()); result.addProperty("y", pos.getY()); result.addProperty("z", pos.getZ());
 			result.addProperty("dimension", Levels.dimensionId(level));
 			result.addProperty("gameTime", level.getGameTime());
@@ -69,9 +102,9 @@ public final class WorldHandlers {
 			ServerLevel level = Levels.resolve(server, ctx.optString("dimension", null));
 			BlockPos pos = BlockPos.containing(ctx.getDouble("x"), ctx.getDouble("y"), ctx.getDouble("z"));
 			if (!level.hasChunkAt(pos)) throw RpcException.notFound("Chunk not loaded at " + pos.toShortString());
-			JsonObject result = CreateKineticAdapter.inspect(level.getBlockEntity(pos));
+			JsonObject result = CreateAdapterProvider.kinetic().inspect(level.getBlockEntity(pos));
 			if ("ok".equals(result.get("status").getAsString()) && result.get("hasNetwork").getAsBoolean()) {
-				JsonObject network = CreateNetworkAdapter.inspect(level.getBlockEntity(pos), 0, 1);
+				JsonObject network = CreateAdapterProvider.network().inspect(level.getBlockEntity(pos), 0, 1);
 				for (String key : List.of("anchorStressSU", "anchorCapacitySU", "anchorContributionSource", "totalsStatus"))
 					if (network.has(key)) result.add(key, network.get(key));
 			}
@@ -100,16 +133,8 @@ public final class WorldHandlers {
 			result.addProperty("blockEntityType", BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(entity.getType()).toString());
 			JsonObject persistent = new JsonObject();
 			if (ctx.optBool("includePersistent", false)) {
-				try {
-					// Only fixed scalar numeric keys leave the bridge. Do not return raw arbitrary NBT.
-					var data = entity.saveWithoutMetadata(level.registryAccess());
-					JsonObject fields = new JsonObject();
-					for (String key : List.of("BurnTime", "CookTime", "CookTimeTotal", "Energy", "energy")) {
-						if (data.get(key) instanceof NumericTag number) fields.addProperty(key, number.getAsDouble());
-					}
-					persistent.addProperty("status", "filtered");
-					persistent.add("numericFields", fields);
-				} catch (RuntimeException ex) { persistent.addProperty("status", "read_error"); }
+				persistent.addProperty("status", "unavailable");
+				persistent.addProperty("reason", "Generic serialization has no enforceable allocation/time bound; use capabilities or a bounded adapter.");
 			} else persistent.addProperty("status", "not_requested");
 			result.add("persistentData", persistent);
 			result.add("capabilities", McpFabric.platform().inspectBlockCapabilities(level, pos));
@@ -118,6 +143,10 @@ public final class WorldHandlers {
 			result.add("runtimeData", runtime);
 			return result;
 		}));
+		router.register("world.runtimeCatalog", ctx -> {
+			Gates.registryRead();
+			return onServerRegistry(server -> RuntimeCatalog.read(server, ctx));
+		});
 		router.register("world.listRegisteredBlocks", ctx -> {
 			Gates.registryRead();
 			return onServerRegistry(server -> {
@@ -153,6 +182,32 @@ public final class WorldHandlers {
 				result.addProperty("hasMore", (long) offset + blocks.size() < matched);
 				result.add("blocks", blocks);
 				return result;
+			});
+		});
+		router.register("world.inspectRecipe", ctx -> {
+			Gates.registryRead();
+			return onServerRegistry(server -> {
+				String id = ctx.getString("recipeId"), input = ctx.optString("inputItem", null);
+				ResourceLocation key = ResourceLocation.tryParse(id);
+				if (key == null || id.length() > 256) throw RpcException.badRequest("Invalid recipeId.");
+				var holder = server.getRecipeManager().byKey(key).orElseThrow(() -> RpcException.notFound("Recipe not loaded."));
+				var recipe = holder.value(); JsonObject out = new JsonObject();
+				out.addProperty("recipeId", key.toString()); out.addProperty("type", BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType()).toString());
+				out.addProperty("source", "active_server_recipe_manager"); out.addProperty("gameTime", server.overworld().getGameTime());
+				ItemStack result = recipe.getResultItem(server.registryAccess());
+				if (!result.isEmpty()) { JsonObject item = new JsonObject(); item.addProperty("id", BuiltInRegistries.ITEM.getKey(result.getItem()).toString()); item.addProperty("count", result.getCount()); out.add("displayResult", item); }
+				else out.addProperty("displayResultStatus", "unavailable_or_dynamic");
+				var ingredients = recipe.getIngredients(); out.addProperty("ingredientCount", ingredients.size());
+				if (input != null) {
+					ResourceLocation inputKey = ResourceLocation.tryParse(input);
+					if (inputKey == null || input.length() > 256 || !BuiltInRegistries.ITEM.containsKey(inputKey)) throw RpcException.badRequest("Unknown inputItem.");
+					if (ingredients.size() > 16) out.addProperty("inputMatchStatus", "too_many_ingredients");
+					else { ItemStack candidate = new ItemStack(BuiltInRegistries.ITEM.get(inputKey)); JsonArray matches = new JsonArray();
+						for (var ingredient : ingredients) matches.add(ingredient.test(candidate));
+						out.add("inputMatchesIngredient", matches); }
+				}
+				out.addProperty("note", "Display result and per-ingredient candidate matches do not prove a complete recipe match or account for dynamic outputs.");
+				return out;
 			});
 		});
 		router.register("world.getBlock", ctx -> onServer(server -> {
@@ -495,6 +550,15 @@ public final class WorldHandlers {
 		for (Object value : property.getPossibleValues()) values.add(property.getName((Comparable) value));
 	}
 
+	private static java.util.UUID structureId(RpcContext ctx) throws RpcException {
+		String id = ctx.getString("structureId");
+		try {
+			var uuid = java.util.UUID.fromString(id);
+			if (uuid.toString().equals(id)) return uuid;
+		} catch (IllegalArgumentException ignored) {}
+		throw RpcException.badRequest("Invalid structure UUID.");
+	}
+
 	private static JsonElement onServer(ServerWork work) throws RpcException {
 		Gates.vision();
 		return onServerRegistry(work);
@@ -503,7 +567,12 @@ public final class WorldHandlers {
 	private static JsonElement onServerRegistry(ServerWork work) throws RpcException {
 		MinecraftServer server = ServerHolder.get();
 		if (server == null) throw RpcException.noServer();
-		return MainThread.call(server, McpFabric.config().callTimeoutMs, () -> work.run(server));
+		return MainThread.call(server, McpFabric.config().callTimeoutMs, () -> {
+			long started = System.nanoTime();
+			JsonElement result = work.run(server);
+			if (result.isJsonObject()) result.getAsJsonObject().addProperty("observationMicros", (System.nanoTime() - started) / 1000);
+			return result;
+		});
 	}
 
 	private interface CtxWork {

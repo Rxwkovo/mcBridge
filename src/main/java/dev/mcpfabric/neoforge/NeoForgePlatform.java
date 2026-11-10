@@ -49,6 +49,21 @@ final class NeoForgePlatform implements Platform {
 		return modVersion;
 	}
 
+	private volatile java.util.Map<String, String> mods;
+
+	@Override
+	public synchronized java.util.Map<String, String> loadedMods() {
+		if (mods == null) {
+			var detected = new java.util.TreeMap<String, String>();
+			ModList.get().getMods().forEach(mod -> detected.put(mod.getModId(), mod.getVersion().toString()));
+			mods = java.util.Collections.unmodifiableMap(detected);
+		}
+		return mods;
+	}
+
+	@Override
+	public boolean supportsFactoryMeter() { return dev.mcpfabric.neoforge.meterprobe.HopperProbe.supported(); }
+
 	@Override
 	public JsonObject inspectBlockCapabilities(ServerLevel level, BlockPos pos) {
 		return NeoForgeCapabilities.inspect(level, pos);

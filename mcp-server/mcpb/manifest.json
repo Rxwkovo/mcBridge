@@ -1,29 +1,36 @@
 {
   "manifest_version": "0.3",
-  "name": "mcpfabric",
-  "display_name": "MCP Fabric (Minecraft)",
-  "version": "0.0.0",
-  "description": "Let Claude see and play Minecraft: Java Edition through the mcpfabric mod (Fabric and NeoForge, 1.21.1 to 26.3).",
-  "long_description": "Install the mcpfabric mod (https://modrinth.com/mod/mcpfabric) and start Minecraft. The extension finds the running game on its own; set the token only if you turned writeDiscoveryFile off in config/mcpfabric.config.json. The mod's enable* flags decide what the AI may do.",
+  "name": "mechagent-bridge",
+  "display_name": "MechAgent Bridge",
+  "version": "1.0.0",
+  "description": "Observe Create and use scoped construction on NeoForge 21.1.248 for Minecraft 1.21.1.",
+  "long_description": "Install the MechAgent Bridge JAR from https://github.com/Rxwkovo/mcBridge/releases. Use a local read-only token for observation.",
   "author": {
-    "name": "denfry",
-    "url": "https://github.com/denfry"
+    "name": "Rxwkovo",
+    "url": "https://github.com/Rxwkovo"
   },
-  "homepage": "https://modrinth.com/mod/mcpfabric",
+  "homepage": "https://github.com/Rxwkovo/mcBridge",
   "repository": {
     "type": "git",
-    "url": "https://github.com/denfry/mcpfabric"
+    "url": "https://github.com/Rxwkovo/mcBridge"
   },
-  "support": "https://github.com/denfry/mcpfabric/issues",
+  "support": "https://github.com/Rxwkovo/mcBridge/issues",
   "icon": "icon.png",
   "license": "MIT",
-  "keywords": ["minecraft", "fabric", "neoforge", "game", "agent"],
+  "keywords": [
+    "minecraft",
+    "neoforge",
+    "game",
+    "agent"
+  ],
   "server": {
     "type": "node",
     "entry_point": "server/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/server/index.js"],
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
       "env": {
         "MCPFABRIC_TOKEN": "${user_config.token}",
         "MCPFABRIC_URL": "${user_config.url}",
@@ -50,13 +57,17 @@
     "toolsets": {
       "type": "string",
       "title": "Tool sets (optional)",
-      "description": "Comma-separated profiles or groups, e.g. play or admin. Empty: all tools.",
+      "description": "Use world,readonly for observation, or select tool groups supported by your setup.",
       "required": false,
-      "default": ""
+      "default": "world,readonly"
     }
   },
   "compatibility": {
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "runtimes": {
       "node": ">=22.16.0"
     }

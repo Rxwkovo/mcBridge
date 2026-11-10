@@ -1,0 +1,5 @@
+{
+  "status": "not_measured",
+  "changes": "The write worker batches up to 64 queued records per force call. No TPS, MSPT, GC, event latency or disk-throughput benchmark was conducted.",
+  "remaining": ["baseline versus telemetry TPS/MSPT", "memory and GC", "queue backpressure and disk write latency", "large networks and monitoring regions"]
+}

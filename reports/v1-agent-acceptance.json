@@ -1,0 +1,1212 @@
+{
+  "status": "partial_isolated",
+  "environment": "Minecraft 1.21.1 / NeoForge 21.1.248 / Create 6.0.10 minimal isolated dedicated server",
+  "agent": "This conversation agent chose the plan from real MCP observations; the harness forwarded individual MCP calls and did not preprogram the placement plan.",
+  "result": "Water wheel observed at -8 RPM, constructed a shaft and mechanical press on an empty branch, new press observed at -8 RPM; cached SU increased 64 to 128 of 256 capacity.",
+  "limitations": [
+    "Not tested in complete Mechanomania",
+    "Press is powered but processing a recipe was not tested",
+    "No gauge comparison",
+    "Model-directed calls, not a separately deployed autonomous-agent runtime",
+    "Existing block entities are protected and the placed press cannot be removed through this interface",
+    "Initial pre-allowlist attempt was refused; server-owned area configuration was changed and a new build installed"
+  ],
+  "calls": [
+    {
+      "time": "2026-11-08T12:58:05.847Z",
+      "tool": "list_registered_blocks",
+      "args": {
+        "modId": "create",
+        "search": "water_wheel",
+        "limit": 20
+      },
+      "isError": false,
+      "result": {
+        "offset": 0,
+        "total": 3,
+        "hasMore": false,
+        "blocks": [
+          {
+            "id": "create:water_wheel",
+            "name": "Water Wheel",
+            "properties": {
+              "facing": [
+                "north",
+                "east",
+                "south",
+                "west",
+                "up",
+                "down"
+              ]
+            }
+          },
+          {
+            "id": "create:large_water_wheel",
+            "name": "Large Water Wheel",
+            "properties": {
+              "axis": [
+                "x",
+                "y",
+                "z"
+              ],
+              "extension": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "id": "create:water_wheel_structure",
+            "name": "Large Water Wheel",
+            "properties": {
+              "facing": [
+                "north",
+                "east",
+                "south",
+                "west",
+                "up",
+                "down"
+              ]
+            }
+          }
+        ],
+        "observationMicros": 8250
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:06.154Z",
+      "tool": "list_registered_blocks",
+      "args": {
+        "modId": "create",
+        "search": "mechanical_press",
+        "limit": 20
+      },
+      "isError": false,
+      "result": {
+        "offset": 0,
+        "total": 1,
+        "hasMore": false,
+        "blocks": [
+          {
+            "id": "create:mechanical_press",
+            "name": "Mechanical Press",
+            "properties": {
+              "facing": [
+                "north",
+                "south",
+                "west",
+                "east"
+              ]
+            }
+          }
+        ],
+        "observationMicros": 1846
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:06.518Z",
+      "tool": "find_blocks",
+      "args": {
+        "center": {
+          "x": 16,
+          "y": 133,
+          "z": 16
+        },
+        "radius": 24,
+        "blockIds": [
+          "create:water_wheel",
+          "create:large_water_wheel"
+        ],
+        "maxResults": 10
+      },
+      "isError": false,
+      "result": {
+        "dimension": "minecraft:overworld",
+        "totalFound": 1,
+        "returned": 1,
+        "truncated": false,
+        "searchedRadius": 24,
+        "matches": [
+          {
+            "x": 8,
+            "y": 128,
+            "z": 8,
+            "id": "create:water_wheel",
+            "distance": 12.36931687685298
+          }
+        ],
+        "observationMicros": 26743
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:17.506Z",
+      "tool": "inspect_create_kinetic",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Static-world kinetic block entity observed on the server thread.",
+        "createVersion": "6.0.10",
+        "rpm": -8,
+        "theoreticalRpm": -8,
+        "rotationSign": "negative",
+        "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+        "overstressed": false,
+        "hasNetwork": true,
+        "source": "Create KineticBlockEntity runtime fields and public methods",
+        "networkId": "2199023288448",
+        "rotationAxis": "x",
+        "networkStatus": "cached_snapshot",
+        "networkStressCapacity": 256,
+        "networkStressConsumption": 64,
+        "networkSize": 3,
+        "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+        "networkDirty": false,
+        "contraptionSupport": "unsupported: static-world block entities only",
+        "anchorStressSU": 0,
+        "anchorCapacitySU": 256,
+        "anchorContributionSource": "Create getActualStressOf/getActualCapacityOf: cached coefficient multiplied by absolute theoretical/generated RPM",
+        "totalsStatus": "cached_may_be_stale",
+        "blockEntityType": "create:water_wheel",
+        "x": 8,
+        "y": 128,
+        "z": 8,
+        "blockId": "create:water_wheel",
+        "dimension": "minecraft:overworld",
+        "gameTime": 11346,
+        "observationMicros": 6651
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:17.852Z",
+      "tool": "get_blocks_region",
+      "args": {
+        "from": {
+          "x": 5,
+          "y": 127,
+          "z": 5
+        },
+        "to": {
+          "x": 13,
+          "y": 131,
+          "z": 11
+        },
+        "maxBlocks": 300
+      },
+      "isError": false,
+      "result": {
+        "dimension": "minecraft:overworld",
+        "volume": 315,
+        "scanned": 315,
+        "unloaded": 0,
+        "offset": 0,
+        "nextOffset": 315,
+        "gameTime": 11353,
+        "count": 11,
+        "truncated": false,
+        "blocks": [
+          {
+            "x": 7,
+            "y": 127,
+            "z": 9,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 8,
+            "y": 127,
+            "z": 9,
+            "id": "minecraft:soul_sand"
+          },
+          {
+            "x": 8,
+            "y": 127,
+            "z": 10,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 9,
+            "y": 127,
+            "z": 9,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 7,
+            "y": 128,
+            "z": 9,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 8,
+            "y": 128,
+            "z": 8,
+            "id": "create:water_wheel"
+          },
+          {
+            "x": 8,
+            "y": 128,
+            "z": 9,
+            "id": "minecraft:bubble_column"
+          },
+          {
+            "x": 8,
+            "y": 128,
+            "z": 10,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 9,
+            "y": 128,
+            "z": 8,
+            "id": "create:shaft"
+          },
+          {
+            "x": 9,
+            "y": 128,
+            "z": 9,
+            "id": "minecraft:water"
+          },
+          {
+            "x": 10,
+            "y": 128,
+            "z": 8,
+            "id": "create:mechanical_press"
+          }
+        ],
+        "observationMicros": 818
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:18.295Z",
+      "tool": "list_registered_blocks",
+      "args": {
+        "modId": "create",
+        "search": "shaft",
+        "limit": 20
+      },
+      "isError": false,
+      "result": {
+        "offset": 0,
+        "total": 6,
+        "hasMore": false,
+        "blocks": [
+          {
+            "id": "create:shaft",
+            "name": "Shaft",
+            "properties": {
+              "axis": [
+                "x",
+                "y",
+                "z"
+              ],
+              "waterlogged": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "id": "create:andesite_encased_shaft",
+            "name": "Andesite Encased Shaft",
+            "properties": {
+              "axis": [
+                "x",
+                "y",
+                "z"
+              ]
+            }
+          },
+          {
+            "id": "create:brass_encased_shaft",
+            "name": "Brass Encased Shaft",
+            "properties": {
+              "axis": [
+                "x",
+                "y",
+                "z"
+              ]
+            }
+          },
+          {
+            "id": "create:powered_shaft",
+            "name": "Powered Shaft",
+            "properties": {
+              "axis": [
+                "x",
+                "y",
+                "z"
+              ],
+              "waterlogged": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "id": "create:gantry_shaft",
+            "name": "Gantry Shaft",
+            "properties": {
+              "facing": [
+                "north",
+                "east",
+                "south",
+                "west",
+                "up",
+                "down"
+              ],
+              "part": [
+                "start",
+                "middle",
+                "end",
+                "single"
+              ],
+              "powered": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "id": "create:metal_girder_encased_shaft",
+            "name": "Metal Girder Encased Shaft",
+            "properties": {
+              "axis": [
+                "x",
+                "z"
+              ],
+              "bottom": [
+                "true",
+                "false"
+              ],
+              "top": [
+                "true",
+                "false"
+              ],
+              "waterlogged": [
+                "true",
+                "false"
+              ]
+            }
+          }
+        ],
+        "observationMicros": 4217
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:53.975Z",
+      "tool": "get_create_network_summary",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Constant-work cached network summary; values can be stale.",
+        "networkId": "2199023288448",
+        "loadedMemberCacheCount": 3,
+        "loadedSourceCacheCount": 1,
+        "networkInitialized": true,
+        "totalsStatus": "cached_may_be_stale",
+        "capacitySU": 256,
+        "stressSU": 64,
+        "remainingSU": 192,
+        "utilization": 0.25,
+        "unloadedCapacitySU": 0,
+        "unloadedStressSU": 0,
+        "unloadedMembers": 0,
+        "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+        "anchor": {
+          "status": "ok",
+          "message": "Static-world kinetic block entity observed on the server thread.",
+          "createVersion": "6.0.10",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "rotationSign": "negative",
+          "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+          "overstressed": false,
+          "hasNetwork": true,
+          "source": "Create KineticBlockEntity runtime fields and public methods",
+          "networkId": "2199023288448",
+          "rotationAxis": "x",
+          "networkStatus": "cached_snapshot",
+          "networkStressCapacity": 256,
+          "networkStressConsumption": 64,
+          "networkSize": 3,
+          "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+          "networkDirty": false,
+          "contraptionSupport": "unsupported: static-world block entities only"
+        },
+        "sampleGameTime": 12076,
+        "sampleDimension": "minecraft:overworld",
+        "gameTime": 12076,
+        "observationMicros": 595
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:54.248Z",
+      "tool": "get_block",
+      "args": {
+        "x": 10,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "x": 10,
+        "y": 128,
+        "z": 8,
+        "id": "create:mechanical_press",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "facing": "east"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 12081,
+        "blockEntity": {
+          "type": "create:mechanical_press",
+          "source": "block_entity_type_registry",
+          "persistentData": "not collected",
+          "runtimeData": "not collected"
+        },
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 1.5,
+        "observationMicros": 146
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:54.560Z",
+      "tool": "get_block",
+      "args": {
+        "x": 7,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "x": 7,
+        "y": 128,
+        "z": 8,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 12088,
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 0,
+        "observationMicros": 41
+      }
+    },
+    {
+      "time": "2026-11-08T12:58:54.917Z",
+      "tool": "get_block",
+      "args": {
+        "x": 6,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "x": 6,
+        "y": 128,
+        "z": 8,
+        "id": "minecraft:air",
+        "air": true,
+        "liquid": false,
+        "dimension": "minecraft:overworld",
+        "gameTime": 12094,
+        "blockLight": 0,
+        "skyLight": 15,
+        "hardness": 0,
+        "observationMicros": 45
+      }
+    },
+    {
+      "time": "2026-11-08T12:59:04.088Z",
+      "tool": "get_block",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "x": 8,
+        "y": 128,
+        "z": 8,
+        "id": "create:water_wheel",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "facing": "east"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 12278,
+        "blockEntity": {
+          "type": "create:water_wheel",
+          "source": "block_entity_type_registry",
+          "persistentData": "not collected",
+          "runtimeData": "not collected"
+        },
+        "blockLight": 0,
+        "skyLight": 14,
+        "hardness": 2,
+        "observationMicros": 66
+      }
+    },
+    {
+      "time": "2026-11-08T12:59:15.430Z",
+      "tool": "preview_batch_edit",
+      "args": {
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "operations": [
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:shaft",
+            "properties": {
+              "axis": "x",
+              "waterlogged": "false"
+            },
+            "expected": {
+              "blockId": "minecraft:air"
+            }
+          },
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:mechanical_press",
+            "properties": {
+              "facing": "east"
+            },
+            "expected": {
+              "blockId": "minecraft:air"
+            }
+          }
+        ]
+      },
+      "isError": true,
+      "result": [
+        {
+          "type": "text",
+          "text": "Bridge error [bad_request]: Block is not in construction allowlist."
+        }
+      ]
+    },
+    {
+      "time": "2026-11-08T13:37:04.208Z",
+      "tool": "get_blocks_region",
+      "args": {
+        "from": {
+          "x": 6,
+          "y": 128,
+          "z": 8
+        },
+        "to": {
+          "x": 8,
+          "y": 128,
+          "z": 8
+        },
+        "includeAir": true,
+        "maxBlocks": 3
+      },
+      "isError": false,
+      "result": {
+        "dimension": "minecraft:overworld",
+        "volume": 3,
+        "scanned": 3,
+        "unloaded": 0,
+        "offset": 0,
+        "nextOffset": 3,
+        "gameTime": 13735,
+        "count": 3,
+        "truncated": false,
+        "blocks": [
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "id": "minecraft:air"
+          },
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "id": "minecraft:air"
+          },
+          {
+            "x": 8,
+            "y": 128,
+            "z": 8,
+            "id": "create:water_wheel"
+          }
+        ],
+        "observationMicros": 467
+      }
+    },
+    {
+      "time": "2026-11-08T13:37:20.722Z",
+      "tool": "preview_batch_edit",
+      "args": {
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "operations": [
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:shaft",
+            "properties": {
+              "axis": "x",
+              "waterlogged": "false"
+            },
+            "expected": {
+              "blockId": "minecraft:air"
+            }
+          },
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "blockId": "create:mechanical_press",
+            "properties": {
+              "facing": "east"
+            },
+            "expected": {
+              "blockId": "minecraft:air"
+            }
+          }
+        ]
+      },
+      "isError": false,
+      "result": {
+        "previewId": "c2da2bae-1449-41ad-9530-220fd080203a",
+        "status": "preview",
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "previewTick": 14065,
+        "items": [
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "result": "pending"
+          },
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:mechanical_press}[facing=east]",
+            "result": "pending"
+          }
+        ],
+        "gameTime": 14065,
+        "warning": "Non-atomic edits; shaft block entity data and kinetic network cache are not restored by undo."
+      }
+    },
+    {
+      "time": "2026-11-08T13:37:36.858Z",
+      "tool": "commit_batch_edit",
+      "args": {
+        "previewId": "c2da2bae-1449-41ad-9530-220fd080203a",
+        "idempotencyKey": "v1-agent-press-20261108-a"
+      },
+      "isError": false,
+      "result": {
+        "previewId": "c2da2bae-1449-41ad-9530-220fd080203a",
+        "operationId": "2deeaaae-ee56-43c9-ae8d-a88d065ad694",
+        "status": "running",
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "previewTick": 14065,
+        "startedTick": 14389,
+        "items": [
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "result": "pending"
+          },
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:mechanical_press}[facing=east]",
+            "result": "pending"
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-11-08T13:37:57.233Z",
+      "tool": "get_edit_operation",
+      "args": {
+        "operationId": "2deeaaae-ee56-43c9-ae8d-a88d065ad694"
+      },
+      "isError": false,
+      "result": {
+        "previewId": "c2da2bae-1449-41ad-9530-220fd080203a",
+        "operationId": "2deeaaae-ee56-43c9-ae8d-a88d065ad694",
+        "status": "completed",
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "previewTick": 14065,
+        "startedTick": 14389,
+        "finishedTick": 14391,
+        "items": [
+          {
+            "x": 7,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:shaft}[axis=x,waterlogged=false]",
+            "result": "applied"
+          },
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "before": "Block{minecraft:air}",
+            "after": "Block{create:mechanical_press}[facing=east]",
+            "result": "applied"
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-11-08T13:37:57.264Z",
+      "tool": "inspect_create_kinetic",
+      "args": {
+        "x": 6,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Static-world kinetic block entity observed on the server thread.",
+        "createVersion": "6.0.10",
+        "rpm": -8,
+        "theoreticalRpm": -8,
+        "rotationSign": "negative",
+        "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+        "overstressed": false,
+        "hasNetwork": true,
+        "source": "Create KineticBlockEntity runtime fields and public methods",
+        "networkId": "2199023288448",
+        "sourcePosition": {
+          "x": 7,
+          "y": 128,
+          "z": 8
+        },
+        "rotationAxis": "x",
+        "networkStatus": "cached_snapshot",
+        "networkStressCapacity": 256,
+        "networkStressConsumption": 128,
+        "networkSize": 5,
+        "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+        "networkDirty": false,
+        "contraptionSupport": "unsupported: static-world block entities only",
+        "anchorStressSU": 64,
+        "anchorContributionSource": "Create getActualStressOf/getActualCapacityOf: cached coefficient multiplied by absolute theoretical/generated RPM",
+        "totalsStatus": "cached_may_be_stale",
+        "blockEntityType": "create:mechanical_press",
+        "x": 6,
+        "y": 128,
+        "z": 8,
+        "blockId": "create:mechanical_press",
+        "dimension": "minecraft:overworld",
+        "gameTime": 14797,
+        "observationMicros": 4822
+      }
+    },
+    {
+      "time": "2026-11-08T13:37:57.495Z",
+      "tool": "get_create_network_summary",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Constant-work cached network summary; values can be stale.",
+        "networkId": "2199023288448",
+        "loadedMemberCacheCount": 5,
+        "loadedSourceCacheCount": 1,
+        "networkInitialized": true,
+        "totalsStatus": "cached_may_be_stale",
+        "capacitySU": 256,
+        "stressSU": 128,
+        "remainingSU": 128,
+        "utilization": 0.5,
+        "unloadedCapacitySU": 0,
+        "unloadedStressSU": 0,
+        "unloadedMembers": 0,
+        "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+        "anchor": {
+          "status": "ok",
+          "message": "Static-world kinetic block entity observed on the server thread.",
+          "createVersion": "6.0.10",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "rotationSign": "negative",
+          "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+          "overstressed": false,
+          "hasNetwork": true,
+          "source": "Create KineticBlockEntity runtime fields and public methods",
+          "networkId": "2199023288448",
+          "rotationAxis": "x",
+          "networkStatus": "cached_snapshot",
+          "networkStressCapacity": 256,
+          "networkStressConsumption": 128,
+          "networkSize": 5,
+          "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+          "networkDirty": false,
+          "contraptionSupport": "unsupported: static-world block entities only"
+        },
+        "sampleGameTime": 14801,
+        "sampleDimension": "minecraft:overworld",
+        "gameTime": 14801,
+        "observationMicros": 414
+      }
+    },
+    {
+      "time": "2026-11-08T13:38:12.762Z",
+      "tool": "preview_batch_edit",
+      "args": {
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "operations": [
+          {
+            "x": 6,
+            "y": 128,
+            "z": 8,
+            "blockId": "minecraft:air",
+            "expected": {
+              "blockId": "create:mechanical_press",
+              "properties": {
+                "facing": "east"
+              }
+            }
+          }
+        ]
+      },
+      "isError": true,
+      "result": [
+        {
+          "type": "text",
+          "text": "Bridge error [bad_request]: Block entity cannot be edited."
+        }
+      ]
+    },
+    {
+      "time": "2026-11-08T13:38:13.083Z",
+      "tool": "inspect_block_entity",
+      "args": {
+        "x": 6,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "x": 6,
+        "y": 128,
+        "z": 8,
+        "id": "create:mechanical_press",
+        "air": false,
+        "liquid": false,
+        "properties": {
+          "facing": "east"
+        },
+        "dimension": "minecraft:overworld",
+        "gameTime": 15113,
+        "status": "available",
+        "blockEntityType": "create:mechanical_press",
+        "persistentData": {
+          "status": "not_requested"
+        },
+        "capabilities": {
+          "scope": "unsided (null); sided capabilities may differ or be unavailable",
+          "items": {
+            "status": "unavailable"
+          },
+          "fluids": {
+            "status": "unavailable"
+          },
+          "energy": {
+            "status": "unavailable"
+          }
+        },
+        "runtimeData": {
+          "status": "unsupported_without_adapter"
+        },
+        "observationMicros": 87
+      }
+    },
+    {
+      "time": "2026-11-08T13:38:13.438Z",
+      "tool": "preview_batch_edit",
+      "args": {
+        "areaId": "agent-build",
+        "dimension": "minecraft:overworld",
+        "operations": [
+          {
+            "x": 33,
+            "y": 128,
+            "z": 8,
+            "blockId": "minecraft:stone"
+          }
+        ]
+      },
+      "isError": true,
+      "result": [
+        {
+          "type": "text",
+          "text": "Bridge error [bad_request]: Position outside authorized area or world bounds."
+        }
+      ]
+    },
+    {
+      "time": "2026-11-08T13:41:45.543Z",
+      "tool": "inspect_create_kinetic",
+      "args": {
+        "x": 6,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Static-world kinetic block entity observed on the server thread.",
+        "createVersion": "6.0.10",
+        "rpm": -8,
+        "theoreticalRpm": -8,
+        "rotationSign": "negative",
+        "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+        "overstressed": false,
+        "hasNetwork": true,
+        "source": "Create KineticBlockEntity runtime fields and public methods",
+        "networkId": "2199023288448",
+        "sourcePosition": {
+          "x": 7,
+          "y": 128,
+          "z": 8
+        },
+        "rotationAxis": "x",
+        "networkStatus": "cached_snapshot",
+        "networkStressCapacity": 256,
+        "networkStressConsumption": 128,
+        "networkSize": 5,
+        "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+        "networkDirty": false,
+        "contraptionSupport": "unsupported: static-world block entities only",
+        "anchorStressSU": 64,
+        "anchorContributionSource": "Create getActualStressOf/getActualCapacityOf: cached coefficient multiplied by absolute theoretical/generated RPM",
+        "totalsStatus": "cached_may_be_stale",
+        "blockEntityType": "create:mechanical_press",
+        "x": 6,
+        "y": 128,
+        "z": 8,
+        "blockId": "create:mechanical_press",
+        "dimension": "minecraft:overworld",
+        "gameTime": 16394,
+        "observationMicros": 6068
+      }
+    },
+    {
+      "time": "2026-11-08T13:41:45.831Z",
+      "tool": "get_create_network_summary",
+      "args": {
+        "x": 8,
+        "y": 128,
+        "z": 8
+      },
+      "isError": false,
+      "result": {
+        "status": "ok",
+        "message": "Constant-work cached network summary; values can be stale.",
+        "networkId": "2199023288448",
+        "loadedMemberCacheCount": 5,
+        "loadedSourceCacheCount": 1,
+        "networkInitialized": true,
+        "totalsStatus": "cached_may_be_stale",
+        "capacitySU": 256,
+        "stressSU": 128,
+        "remainingSU": 128,
+        "utilization": 0.5,
+        "unloadedCapacitySU": 0,
+        "unloadedStressSU": 0,
+        "unloadedMembers": 0,
+        "totalsSource": "Create KineticNetwork currentCapacity/currentStress; Create includes unloaded contributions",
+        "anchor": {
+          "status": "ok",
+          "message": "Static-world kinetic block entity observed on the server thread.",
+          "createVersion": "6.0.10",
+          "rpm": -8,
+          "theoreticalRpm": -8,
+          "rotationSign": "negative",
+          "rotationSignSource": "Create KineticBlockEntity.getSpeed; sign follows Create axis convention",
+          "overstressed": false,
+          "hasNetwork": true,
+          "source": "Create KineticBlockEntity runtime fields and public methods",
+          "networkId": "2199023288448",
+          "rotationAxis": "x",
+          "networkStatus": "cached_snapshot",
+          "networkStressCapacity": 256,
+          "networkStressConsumption": 128,
+          "networkSize": 5,
+          "networkSnapshotSource": "Create KineticBlockEntity.updateFromNetwork cached values",
+          "networkDirty": false,
+          "contraptionSupport": "unsupported: static-world block entities only"
+        },
+        "sampleGameTime": 16400,
+        "sampleDimension": "minecraft:overworld",
+        "gameTime": 16400,
+        "observationMicros": 473
+      }
+    },
+    {
+      "time": "2026-11-08T13:41:58.010Z",
+      "tool": "get_status",
+      "args": {},
+      "isError": false,
+      "result": {
+        "mod": "mcpfabric",
+        "modVersion": "0.9.1+1.21.1",
+        "minecraftVersion": "1.21.1",
+        "loader": "neoforge",
+        "accessMode": "REGION_BUILD",
+        "adminEnabled": false,
+        "side": "dedicated_server",
+        "aiPaused": false,
+        "requireApproval": [],
+        "serverPresent": true,
+        "integratedServer": false,
+        "playerCount": 0,
+        "capabilities": [
+          "info",
+          "chat",
+          "events",
+          "registry_read",
+          "world_read",
+          "entities",
+          "region_build"
+        ],
+        "methods": [
+          "chat.getRecent",
+          "chat.send",
+          "command.run",
+          "construction.commit",
+          "construction.preview",
+          "construction.query",
+          "construction.undo",
+          "entities.get",
+          "entities.query",
+          "entities.remove",
+          "entities.summon",
+          "events.getRecent",
+          "info.capabilities",
+          "info.status",
+          "players.applyEffect",
+          "players.get",
+          "players.give",
+          "players.kick",
+          "players.list",
+          "players.message",
+          "players.setGameMode",
+          "players.teleport",
+          "session.info",
+          "supervised.begin",
+          "supervised.command",
+          "supervised.end",
+          "supervised.readBlock",
+          "supervised.reconcile",
+          "supervised.setBlock",
+          "supervised.status",
+          "supervised.stop",
+          "telemetry.create",
+          "telemetry.get",
+          "telemetry.history",
+          "telemetry.list",
+          "telemetry.metrics",
+          "telemetry.pause",
+          "telemetry.update",
+          "world.fill",
+          "world.findBlocks",
+          "world.getBlock",
+          "world.getBlocks",
+          "world.getDimensions",
+          "world.getTimeAndWeather",
+          "world.inspectBlockEntity",
+          "world.inspectCreateKinetic",
+          "world.inspectCreateNetwork",
+          "world.listRegisteredBlocks",
+          "world.networkJobCancel",
+          "world.networkJobPage",
+          "world.networkJobStart",
+          "world.networkJobStatus",
+          "world.networkSummary",
+          "world.raycast",
+          "world.setBlock",
+          "world.setTime",
+          "world.setWeather"
+        ]
+      }
+    },
+    {
+      "time": "2026-11-08T13:41:58.038Z",
+      "tool": "list_capabilities",
+      "args": {},
+      "isError": false,
+      "result": {
+        "groups": {
+          "info": true,
+          "world_read": true,
+          "registry_read": true,
+          "world_write": false,
+          "entities": true,
+          "players_admin": false,
+          "command": false,
+          "player_local": false,
+          "control": false,
+          "interact": false,
+          "inventory": false,
+          "chat": true,
+          "vision": false,
+          "navigation": false,
+          "perception": false,
+          "containers": false,
+          "recipes": false,
+          "crafting": false,
+          "session": false,
+          "ui": false,
+          "supervised": false,
+          "events": true,
+          "region_build": true
+        }
+      }
+    }
+  ],
+  "readonlyConstructionHttp": 403,
+  "latestBuildRestart": "The powered press remained -8 RPM after the final JAR was installed and the isolated server restarted.",
+  "fullClient": "All 207 source-copy mod filenames are present in isolated client, and latest bridge JAR was copied; source file hashes were not compared. Launcher automation request timed out before launch, so full-pack compatibility is unverified.",
+  "followup": "Subsequent real pressing and restart test: reports/v1-processing-acceptance.json."
+}

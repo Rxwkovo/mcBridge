@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "partial_live_validation",
+  "commit": "d2c3219",
+  "observed": "In the isolated world, a bounded single-shaft operation completed. After graceful server restart, construction.query returned recovery_required with journalStatus completed, progress applied and observation matches_after; the current block was minecraft:air. The shaft was restored by a separate authorized preview and commit.",
+  "semantics": "Matching a before/after BlockState is an observation and does not prove which actor changed it. No automatic replay is performed; unloaded positions and changed authorization are refused or reported unavailable.",
+  "evidence": "integration-test/evidence/recovery-poc02-20261108a.json",
+  "tests": "Java recovery classification tests passed; no injected mid-write process crash, disk fault, revocation or chunk-unload recovery test was performed in this run.",
+  "limits": ["Each edit writes and forces the journal synchronously before and after world mutation; one edit per tick limits count, not worst-case disk latency.", "Post-restart undo and automated continuation are not implemented; recovery results can guide a separately authorized new operation.", "Durability across OS crash or power loss and directory-entry persistence remain unverified."]
+}

@@ -11,6 +11,8 @@
 const METHOD_GROUPS: Record<string, string> = {
   info: "info",
   world: "world",
+  construction: "world",
+  telemetry: "world",
   entities: "entities",
   players: "operator",
   command: "operator",

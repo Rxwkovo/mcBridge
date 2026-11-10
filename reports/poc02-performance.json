@@ -1,0 +1,15 @@
+{
+  "note": "No large-network performance or memory measurements; limits are not validated defaults.",
+  "status": "partial",
+  "tps_mspt": "not measured",
+  "real_network_nodes": 3,
+  "targets_not_tested": [
+    256,
+    1024,
+    4096,
+    8192,
+    16384
+  ],
+  "capture_start_tick": 2960,
+  "capture_end_tick": 2962
+}

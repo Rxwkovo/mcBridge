@@ -6,25 +6,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
+import dev.mcpfabric.McpFabric;
 
 /** Read-only adapter for static-world Create 6.0.10 kinetic block entities.
  * The caller must resolve the loaded block entity on the server thread.
  * No Create class appears in a signature, so the bridge loads without Create.
  */
-public final class CreateKineticAdapter {
-	private static final String EXPECTED_VERSION = "6.0.10";
+final class CreateKineticAdapter implements KineticObserver {
 	private static final String KINETIC = "com.simibubi.create.content.kinetics.base.KineticBlockEntity";
 	private static final String ROTATE = "com.simibubi.create.content.kinetics.base.IRotate";
 
-	private CreateKineticAdapter() {}
-
-	public static JsonObject inspect(BlockEntity entity) {
+	@Override
+	public JsonObject inspect(BlockEntity entity) {
 		try {
-			String version = createVersion();
+			var platform = McpFabric.platform();
+			String version = CreateAdapterProvider.version(platform);
 			if (version == null) return status("create_not_loaded", "Create is not loaded in NeoForge.");
-			if (!EXPECTED_VERSION.equals(version)) {
+			if (!"detected".equals(CreateAdapterProvider.status(platform))) {
 				JsonObject result = status("unsupported_version", "This adapter is verified against Create 6.0.10 only.");
 				result.addProperty("createVersion", version);
 				return result;
@@ -47,6 +45,7 @@ public final class CreateKineticAdapter {
 			result.addProperty("overstressed", overstressed);
 			result.addProperty("hasNetwork", hasNetwork);
 			result.addProperty("source", "Create KineticBlockEntity runtime fields and public methods");
+			try {
 			Object id = kinetic.getField("network").get(entity);
 			if (id != null) result.addProperty("networkId", id.toString());
 			Object source = kinetic.getField("source").get(entity);
@@ -54,6 +53,9 @@ public final class CreateKineticAdapter {
 				JsonObject pos = new JsonObject();
 				pos.addProperty("x", p.getX()); pos.addProperty("y", p.getY()); pos.addProperty("z", p.getZ());
 				result.add("sourcePosition", pos);
+			}
+			} catch (ReflectiveOperationException | SecurityException ex) {
+				result.addProperty("networkIdentityStatus", "unavailable");
 			}
 			readAxis(entity, result);
 			if (hasNetwork) readNetworkSnapshot(kinetic, entity, result);
@@ -63,20 +65,6 @@ public final class CreateKineticAdapter {
 		} catch (ReflectiveOperationException | LinkageError | SecurityException e) {
 			return status("adapter_unavailable", "Create API access failed: " + e.getClass().getSimpleName());
 		}
-	}
-
-	private static String createVersion() throws ReflectiveOperationException {
-		Class<?> modList;
-		try { modList = Class.forName("net.neoforged.fml.ModList"); }
-		catch (ClassNotFoundException e) { return null; }
-		Object list = modList.getMethod("get").invoke(null);
-		if (list == null) return null;
-		Class<?> info = Class.forName("net.neoforged.neoforgespi.language.IModInfo");
-		Method getId = info.getMethod("getModId"), getVersion = info.getMethod("getVersion");
-		for (Object mod : (List<?>) modList.getMethod("getMods").invoke(list)) {
-			if ("create".equals(getId.invoke(mod))) return String.valueOf(getVersion.invoke(mod));
-		}
-		return null;
 	}
 
 	private static void readAxis(BlockEntity entity, JsonObject result) {

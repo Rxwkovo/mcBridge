@@ -23,6 +23,8 @@ public final class InfoHandlers {
 			o.addProperty("modVersion", McpFabric.platform().modVersion());
 			o.addProperty("minecraftVersion", McpFabric.platform().minecraftVersion());
 			o.addProperty("loader", McpFabric.platform().loader());
+			o.addProperty("accessMode", McpFabric.config().accessMode);
+			o.addProperty("adminEnabled", admin());
 			o.addProperty("side", client ? "client" : "dedicated_server");
 			// The player paused the AI (client only): actions are refused until they resume it.
 			o.addProperty("aiPaused", Takeover.paused());
@@ -40,6 +42,52 @@ public final class InfoHandlers {
 			return o;
 		});
 
+		router.register("info.environmentCapabilities", ctx -> {
+			var platform = McpFabric.platform();
+			var config = McpFabric.config();
+			boolean serverPresent = ServerHolder.isPresent();
+			JsonObject out = new JsonObject();
+			out.addProperty("schemaVersion", 1);
+			out.addProperty("bridgeVersion", platform.modVersion());
+			out.addProperty("minecraftVersion", platform.minecraftVersion());
+			out.addProperty("loader", platform.loader());
+			out.addProperty("loaderVersion", platform.loadedMods().get(platform.loader()));
+			out.addProperty("serverPresent", serverPresent);
+			JsonObject mods = new JsonObject();
+			platform.loadedMods().forEach(mods::addProperty);
+			out.add("loadedMods", mods);
+			out.addProperty("modInventoryStatus", mods.size() == 0 ? "unavailable_on_loader" : "detected");
+			JsonObject create = new JsonObject();
+			create.addProperty("id", "create-native");
+			create.addProperty("version", dev.mcpfabric.adapters.CreateAdapterProvider.version(platform));
+			create.addProperty("status", dev.mcpfabric.adapters.CreateAdapterProvider.status(platform));
+			create.addProperty("supportedVersion", dev.mcpfabric.adapters.CreateAdapterProvider.SUPPORTED_VERSION);
+			create.addProperty("verification", "runtime_observation_required");
+			create.addProperty("networkUnit", "SU");
+			create.addProperty("meterBoundary", platform.supportsFactoryMeter() ? "create_depot_to_vanilla_hopper" : "unsupported");
+			out.add("create", create);
+			out.add("registeredRpcMethods", router.methodNames());
+			JsonObject access = new JsonObject();
+			access.addProperty("accessMode", config.accessMode);
+			access.addProperty("registryReadEnabled", config.enableRegistryRead);
+			access.addProperty("visionEnabled", config.enableVision);
+			access.addProperty("worldWriteEnabled", config.enableWorldWrite && admin());
+			access.addProperty("regionBuildMode", serverPresent && ("REGION_BUILD".equals(config.accessMode) || admin()));
+			access.addProperty("authorization", "evaluated_per_operation");
+			out.add("serverPolicy", access);
+			JsonObject budgets = new JsonObject();
+			budgets.addProperty("networkMemberLimit", config.networkMemberLimit);
+			budgets.addProperty("networkTickBudgetMicros", config.networkTickBudgetMicros);
+			budgets.addProperty("networkNodesPerTick", config.networkNodesPerTick);
+			budgets.addProperty("networkGlobalBudgetBytes", config.networkGlobalBudgetBytes);
+			budgets.addProperty("movingRadiusBlocks", 32);
+			budgets.addProperty("movingResultLimit", 16);
+			budgets.addProperty("movingSnapshotMembers", 512);
+			budgets.addProperty("movingPageLimit", 64);
+			out.add("budgets", budgets);
+			return out;
+		});
+
 		router.register("info.capabilities", ctx -> {
 			boolean client = McpFabric.platform().isClient();
 			boolean serverPresent = ServerHolder.isPresent();
@@ -49,7 +97,7 @@ public final class InfoHandlers {
 			groups.addProperty("world_read", serverPresent && McpFabric.config().enableVision);
 			groups.addProperty("registry_read", serverPresent && McpFabric.config().enableRegistryRead);
 			groups.addProperty("world_write", serverPresent && McpFabric.config().enableWorldWrite);
-			groups.addProperty("entities", serverPresent);
+			groups.addProperty("entities", serverPresent && McpFabric.config().enableVision);
 			groups.addProperty("players_admin", serverPresent && McpFabric.config().enableCommands);
 			groups.addProperty("command", serverPresent && McpFabric.config().enableCommands);
 			groups.addProperty("player_local", client);
@@ -67,6 +115,8 @@ public final class InfoHandlers {
 			groups.addProperty("ui", client && McpFabric.config().enablePlayerControl && McpFabric.config().enableUiControl);
 			groups.addProperty("supervised", McpFabric.config().enableSupervisedControl);
 			groups.addProperty("events", true);
+			if (!admin()) for (String group : java.util.List.of("world_write", "command", "players_admin", "control", "interact", "inventory", "navigation", "containers", "crafting", "session", "ui", "supervised")) groups.addProperty(group, false);
+			groups.addProperty("region_build", serverPresent && "REGION_BUILD".equals(McpFabric.config().accessMode));
 
 			JsonObject o = new JsonObject();
 			o.add("groups", groups);
@@ -83,7 +133,7 @@ public final class InfoHandlers {
 		if (serverPresent) {
 			if (McpFabric.config().enableRegistryRead) a.add("registry_read");
 			if (McpFabric.config().enableVision) a.add("world_read");
-			a.add("entities");
+			if (McpFabric.config().enableVision) a.add("entities");
 			if (McpFabric.config().enableWorldWrite) a.add("world_write");
 			if (McpFabric.config().enableCommands) {
 				a.add("command");
@@ -108,6 +158,16 @@ public final class InfoHandlers {
 				a.add("perception");
 			}
 		}
+		if (!admin()) {
+			JsonArray filtered = new JsonArray();
+			for (var entry : a) if (!java.util.Set.of("world_write", "command", "players_admin", "control", "interact", "inventory", "navigation", "containers", "crafting", "session", "ui", "supervised").contains(entry.getAsString())) filtered.add(entry);
+			a = filtered;
+		}
+		if (serverPresent && "REGION_BUILD".equals(McpFabric.config().accessMode)) a.add("region_build");
 		return a;
+	}
+
+	private static boolean admin() {
+		return "ADMIN".equals(McpFabric.config().accessMode) && McpFabric.config().allowAdmin;
 	}
 }
